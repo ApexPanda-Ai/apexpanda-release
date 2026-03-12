@@ -1,0 +1,34 @@
+name: pdf-reader
+version: 1.0.0
+description: PDF 解析、文本提取、关键信息抽取，无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 从 URL 获取 PDF（仅 extractFromUrl 需要）
+
+tools:
+  - id: extractFromBase64
+    description: 从 Base64 编码的 PDF 提取纯文本
+    handler: pdf-reader#extractFromBase64
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: Base64 编码的 PDF 内容 }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [content]
+  - id: extractFromUrl
+    description: 从 URL 下载 PDF 并提取纯文本
+    handler: pdf-reader#extractFromUrl
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: PDF 文件 URL }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

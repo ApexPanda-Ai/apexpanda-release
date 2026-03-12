@@ -1,0 +1,1 @@
+{"version":3,"file":"runner.d.ts","sourceRoot":"","sources":["../../src/discussion/runner.ts"],"names":[],"mappings":"AAQA,OAAO,KAAK,EAAE,sBAAsB,EAAE,MAAM,sBAAsB,CAAC;AACnE,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,aAAa,CAAC;AAsDpD,wBAAsB,aAAa,CACjC,OAAO,EAAE,MAAM,EACf,GAAG,EAAE,sBAAsB,EAC3B,MAAM,EAAE,gBAAgB,GACvB,OAAO,CAAC,IAAI,CAAC,CAgGf"}

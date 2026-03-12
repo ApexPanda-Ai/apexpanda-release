@@ -1,0 +1,105 @@
+name: wechat-mp-publish
+version: 1.0.0
+description: 微信公众号草稿创建与发布，支持将图文内容添加为草稿并发布。需配置 WECHAT_MP_APP_ID、WECHAT_MP_APP_SECRET。适用于已认证公众号/服务号
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用微信公众平台 API
+
+tools:
+  - id: addDraft
+    description: 将图文内容添加为公众号草稿。title、content 必填；thumbMediaId 为封面 media_id 必填（可 listMaterials 选或 uploadThumb 上传）。可选 picCrop2351、picCrop11 指定裁剪（格式 X1_Y1_X2_Y2，如 0_0_1_1 用全图），封面推荐 900×500，遇「封面裁剪失败」时显式传 picCrop2351 可缓解
+    handler: wechat-mp-publish#addDraft
+    parameters:
+      type: object
+      properties:
+        title: { type: string, description: 文章标题，必填 }
+        content: { type: string, description: 正文 HTML，必填 }
+        thumbMediaId: { type: string, description: 封面 media_id，listMaterials 或 uploadThumb 获取，必填 }
+        author: { type: string, description: 作者，可选 }
+        digest: { type: string, description: 摘要，可选 }
+        contentSourceUrl: { type: string, description: 原文链接，可选 }
+        picCrop2351: { type: string, description: 封面裁剪 2.35:1，格式 X1_Y1_X2_Y2 }
+        picCrop11: { type: string, description: 封面裁剪 1:1，格式 X1_Y1_X2_Y2 }
+      required: [title, content, thumbMediaId]
+  - id: listMaterials
+    description: 获取公众号素材库列表。type 默认 image（封面用图片）；返回的 mediaId 可直接作为 addDraft 的 thumbMediaId。若素材库有图，优先调用此工具选封面，无需上传
+    handler: wechat-mp-publish#listMaterials
+    parameters:
+      type: object
+      properties:
+        type: { type: string, description: 素材类型 image（默认，封面用）/ voice / video / news }
+        offset: { type: number, description: 偏移量，默认 0 }
+        count: { type: number, description: 返回数量 1-20，默认 20 }
+      required: []
+  - id: uploadThumb
+    description: 上传封面图获取永久 media_id，供 addDraft 使用。推荐 path 传工作区内图片路径（如 .agent-scripts/cover.jpg）；或 imageUrl 传图片 URL；或 base64 传 base64 字符串。封面不超过 2MB
+    handler: wechat-mp-publish#uploadThumb
+    parameters:
+      type: object
+      properties:
+        path: { type: string, description: 工作区内图片路径，推荐方式 }
+        imageUrl: { type: string, description: 图片 URL，与 path、base64 三选一 }
+        base64: { type: string, description: base64 编码的图片，与 path、imageUrl 三选一 }
+      required: []
+  - id: uploadImage
+    description: 上传图文消息正文内的图片，返回 url 供 content 中 <img src="url"> 使用
+    handler: wechat-mp-publish#uploadImage
+    parameters:
+      type: object
+      properties:
+        path: { type: string, description: 工作区内图片路径，与 imageUrl、base64 三选一 }
+        imageUrl: { type: string, description: 图片 URL，与 path、base64 三选一 }
+        base64: { type: string, description: base64 编码的图片，与 path、imageUrl 三选一 }
+      required: []
+  - id: formatArticle
+    description: 公众号 HTML 排版。输入 title、content，输出精美排版的 formattedContent，内含 {{IMG_1}}、{{IMG_2}} 等占位符。必须用 image-gen 生成配图、uploadImage 后替换占位符，否则文章无图
+    handler: wechat-mp-publish#formatArticle
+    parameters:
+      type: object
+      properties:
+        title: { type: string, description: 文章标题 }
+        content: { type: string, description: 正文（纯文本或简单 HTML） }
+      required: [content]
+  - id: selectCover
+    description: 根据标题从素材库 items 中选最相关的封面。itemsJson 为 listMaterials 返回的 items 的 JSON 字符串。返回 mediaId 或 needImageGen=true 表示需用 image-gen 生成封面
+    handler: wechat-mp-publish#selectCover
+    parameters:
+      type: object
+      properties:
+        title: { type: string, description: 文章标题，必填 }
+        itemsJson: { type: string, description: listMaterials 返回的 items 的 JSON.stringify 结果，必填 }
+      required: [title, itemsJson]
+  - id: publishDraft
+    description: 将草稿提交发布（生成永久链接）。注意：发布接口不会推送给粉丝，手机微信打开公众号看不到；仅后台可见。要让粉丝看到需用 massSend 群发
+    handler: wechat-mp-publish#publishDraft
+    parameters:
+      type: object
+      properties:
+        mediaId: { type: string, description: addDraft 返回的 media_id，必填 }
+      required: [mediaId]
+  - id: massSend
+    description: 群发图文给粉丝，粉丝在手机微信会收到推送并在公众号历史消息中看到。mediaId 为 addDraft 返回的 media_id。订阅号每天1次、服务号每月4次；若开启API群发保护需管理员确认
+    handler: wechat-mp-publish#massSend
+    parameters:
+      type: object
+      properties:
+        mediaId: { type: string, description: addDraft 返回的 media_id，必填 }
+        tagId: { type: number, description: 按标签群发时指定标签ID，不传则群发全部 }
+      required: [mediaId]
+  - id: listDrafts
+    description: 获取草稿箱列表，支持分页
+    handler: wechat-mp-publish#listDrafts
+    parameters:
+      type: object
+      properties:
+        offset: { type: number, description: 偏移量，默认 0 }
+        count: { type: number, description: 返回数量，默认 20 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,69 @@
+name: browser-automation
+version: 1.0.0
+description: 浏览器自动化，模拟键盘鼠标操作。可打开网页、点击、输入、截图、获取页面结构，支持多步骤编排
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 加载网页
+  - id: process
+    scope: spawn
+    description: 启动浏览器进程
+
+tools:
+  - id: runSteps
+    description: 执行浏览器操作。steps 含 action；persistent 为 true 时保持会话（Cookie 持久化）。支持 newTab/switchTab 多标签
+    handler: browser-automation#runSteps
+    parameters:
+      type: object
+      properties:
+        steps:
+          type: array
+          description: 操作步骤。打开网页用 {action:"navigate",url:"https://..."}；快照用 {action:"snapshot"}；点击用 {action:"click",selector:"..."}
+          items:
+            type: object
+            properties:
+              action: { type: string }
+              url: { type: string }
+              selector: { type: string }
+              value: { type: string }
+        persistent:
+          type: boolean
+          description: 是否复用会话，可选
+      required: [steps]
+  - id: navigateAndSnapshot
+    description: 打开 URL 并返回页面可点击元素快照。persistent 为 true 时复用会话
+    handler: browser-automation#navigateAndSnapshot
+    parameters:
+      type: object
+      properties:
+        url:
+          type: string
+          description: 要打开的完整 URL。用户说「浏览器搜索」「在浏览器打开」「打开XX网站」「看XX的新闻」时必须用此工具（勿用 web-search）。域名如 ju.com、jd.com 转为 https://www.xxx.com。百度=baidu.com，京东=jd.com，谷歌=google.com
+        persistent:
+          type: boolean
+          description: 是否复用会话，可选
+      required: [url]
+  - id: screenshot
+    description: 打开 URL 并截图。persistent 为 true 时复用会话
+    handler: browser-automation#screenshot
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 要截图的完整 URL }
+        persistent: { type: boolean, description: 是否复用会话，可选 }
+      required: [url]
+  - id: closeSession
+    description: 关闭指定 sessionId 的持久化浏览器会话，释放资源
+    handler: browser-automation#closeSession
+    parameters:
+      type: object
+      properties:
+        sessionId: { type: string, description: 要关闭的浏览器会话 ID }
+      required: [sessionId]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

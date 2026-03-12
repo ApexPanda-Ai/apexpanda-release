@@ -1,0 +1,28 @@
+name: asr-xunfei
+version: 1.0.0
+description: 科大讯飞语音听写。需配置 XFYUN_APP_ID、XFYUN_API_KEY、XFYUN_API_SECRET（讯飞开放平台）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用讯飞语音听写 WebSocket API
+
+tools:
+  - id: recognize
+    description: 语音转文字。支持 audioUrl、dataUrl、base64。format 默认 pcm，sampleRate 默认 16000，engineType 如 sms16k
+    handler: asr-xunfei#recognize
+    parameters:
+      type: object
+      properties:
+        audioUrl: { type: string, description: 音频 URL }
+        dataUrl: { type: string, description: Data URL }
+        base64: { type: string, description: Base64 编码的音频 }
+        format: { type: string, description: 格式如 pcm }
+        sampleRate: { type: number, description: 采样率，默认 16000 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

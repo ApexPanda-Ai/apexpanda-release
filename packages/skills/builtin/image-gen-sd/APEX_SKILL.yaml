@@ -1,0 +1,32 @@
+name: image-gen-sd
+version: 1.0.0
+description: Stable Diffusion 本地生成（Automatic1111 WebUI API）。需本地运行 --api 模式
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+  - id: filesystem
+    scope: write
+    description: 保存生成的图片到工作区
+
+tools:
+  - id: generate
+    description: 根据文字描述生成图片。调用本地 Stable Diffusion API（默认 http://127.0.0.1:7860）
+    handler: image-gen-sd#generate
+    parameters:
+      type: object
+      properties:
+        prompt: { type: string, description: 图片描述 }
+        negativePrompt: { type: string, description: 负面提示词，避免的内容 }
+        steps: { type: number, description: 采样步数，默认 20 }
+        width: { type: number, description: 宽度，默认 512 }
+        height: { type: number, description: 高度，默认 512 }
+        seed: { type: number, description: 随机种子，-1 为随机 }
+        savePath: { type: string, description: 保存路径（相对于工作区），可选 }
+      required: [prompt]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

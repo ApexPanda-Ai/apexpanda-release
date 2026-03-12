@@ -1,0 +1,33 @@
+name: tts-azure
+version: 1.0.0
+description: Azure 语音合成（Text-to-Speech）。需配置 AZURE_SPEECH_KEY、AZURE_SPEECH_REGION（如 eastasia、westus2）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用 Azure Speech Services TTS API
+
+tools:
+  - id: synthesize
+    description: 将文本合成为语音。text 为要朗读的文本，voice 为语音名称（默认 zh-CN-XiaoxiaoNeural），outputFormat 默认 audio-24khz-48kbitrate-mono-mp3
+    handler: tts-azure#synthesize
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 要朗读的文本 }
+        voice: { type: string, description: 语音名称，默认 zh-CN-XiaoxiaoNeural }
+        outputFormat: { type: string, description: 输出格式 }
+      required: [text]
+  - id: listVoices
+    description: 获取支持的语言与语音列表
+    handler: tts-azure#listVoices
+    parameters:
+      type: object
+      properties: {}
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

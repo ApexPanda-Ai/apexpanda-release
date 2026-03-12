@@ -1,0 +1,22 @@
+name: chart-gen
+version: 1.0.0
+description: 数据可视化，生成 ECharts 配置（折线/柱状/饼图等），供前端渲染
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: generate
+    description: 根据标签与数值生成 ECharts 配置，支持 bar/line/pie 类型
+    handler: chart-gen#generate
+    parameters:
+      type: object
+      properties:
+        type: { type: string, enum: [bar, line, pie], description: 图表类型 }
+        labels: { type: array, items: { type: string }, description: 标签数组 }
+        values: { type: array, items: { type: number }, description: 数值数组，与 labels 等长 }
+        title: { type: string, description: 图表标题，可选 }
+      required: [labels, values]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

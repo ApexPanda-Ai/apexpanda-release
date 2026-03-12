@@ -1,0 +1,37 @@
+name: google-calendar
+version: 1.0.0
+description: Google 日历集成。需配置 Google OAuth（GOOGLE_CLIENT_ID、GOOGLE_CLIENT_SECRET、GOOGLE_REFRESH_TOKEN）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: listEvents
+    description: 查询日历日程。calendarId 默认 primary，timeMin/timeMax 为 ISO 时间
+    handler: google-calendar#listEvents
+    parameters:
+      type: object
+      properties:
+        calendarId: { type: string, description: 日历 ID，默认 primary }
+        timeMin: { type: string, description: 开始时间 ISO }
+        timeMax: { type: string, description: 结束时间 ISO }
+      required: []
+  - id: createEvent
+    description: 创建日程
+    handler: google-calendar#createEvent
+    parameters:
+      type: object
+      properties:
+        calendarId: { type: string }
+        summary: { type: string, description: 日程标题 }
+        startTime: { type: string, description: 开始时间 ISO }
+        endTime: { type: string, description: 结束时间 ISO }
+        description: { type: string }
+      required: [summary, startTime, endTime]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

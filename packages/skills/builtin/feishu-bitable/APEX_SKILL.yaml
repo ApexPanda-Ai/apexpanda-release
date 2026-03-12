@@ -1,0 +1,49 @@
+name: feishu-bitable
+version: 1.0.0
+description: 飞书多维表 Bitable 读写。需配置 FEISHU_APP_ID、FEISHU_APP_SECRET，应用需开通 bitable 权限
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用飞书开放平台 Bitable API
+
+tools:
+  - id: listRecords
+    description: 列出多维表记录。appToken 为表格应用 token（URL 中），tableId 为数据表 ID，pageSize 默认 100，pageToken 可选
+    handler: feishu-bitable#listRecords
+    parameters:
+      type: object
+      properties:
+        appToken: { type: string, description: 表格应用 token }
+        tableId: { type: string, description: 数据表 ID }
+        pageSize: { type: number, description: 每页条数，默认 100 }
+        pageToken: { type: string }
+      required: [appToken, tableId]
+  - id: createRecord
+    description: 新增一条记录。fields 为字段名到值的对象，如 {"标题":"xxx","单选":"选项A"}
+    handler: feishu-bitable#createRecord
+    parameters:
+      type: object
+      properties:
+        appToken: { type: string }
+        tableId: { type: string }
+        fields: { type: object, description: 字段名到值，如 {"标题":"xxx"} }
+      required: [appToken, tableId, fields]
+  - id: searchRecords
+    description: 按条件搜索记录。filter 为筛选表达式，详见飞书 API 文档
+    handler: feishu-bitable#searchRecords
+    parameters:
+      type: object
+      properties:
+        appToken: { type: string }
+        tableId: { type: string }
+        filter: { type: string, description: 筛选表达式 }
+        pageSize: { type: number }
+        pageToken: { type: string }
+      required: [appToken, tableId]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,32 @@
+name: exchange-rate
+version: 1.0.0
+description: 实时汇率查询，支持多币种
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问汇率 API
+
+tools:
+  - id: get_rate
+    description: 查询指定货币对的最新汇率，如 USD/CNY、EUR/USD
+    handler: exchange-rate#getRate
+    parameters:
+      type: object
+      properties:
+        from: { type: string, description: 源货币代码，默认 USD }
+        to: { type: string, description: 目标货币代码，默认 CNY }
+      required: []
+  - id: list_currencies
+    description: 获取支持的货币代码列表
+    handler: exchange-rate#listCurrencies
+    parameters:
+      type: object
+      properties: {}
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

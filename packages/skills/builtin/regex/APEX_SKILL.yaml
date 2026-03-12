@@ -1,0 +1,46 @@
+name: regex
+version: 1.0.0
+description: 正则表达式匹配与替换，用于文本提取、格式校验
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: match
+    description: 使用正则从文本中匹配（可返回所有匹配或首个）
+    handler: regex#match
+    parameters:
+      type: object
+      properties:
+        pattern: { type: string, description: 正则表达式 }
+        text: { type: string, description: 待匹配文本 }
+        flags: { type: string, description: 正则标志如 g、i，默认 g }
+        all: { type: boolean, description: 是否返回所有匹配，默认 true }
+      required: [pattern, text]
+  - id: replace
+    description: 使用正则替换文本中的匹配内容
+    handler: regex#replace
+    parameters:
+      type: object
+      properties:
+        pattern: { type: string, description: 正则表达式 }
+        text: { type: string, description: 原文本 }
+        replacement: { type: string, description: 替换字符串 }
+        flags: { type: string, description: 正则标志，默认 g }
+      required: [pattern, text, replacement]
+  - id: test
+    description: 测试文本是否匹配正则
+    handler: regex#test
+    parameters:
+      type: object
+      properties:
+        pattern: { type: string, description: 正则表达式 }
+        text: { type: string, description: 待测试文本 }
+      required: [pattern, text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

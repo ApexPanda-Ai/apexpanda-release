@@ -1,0 +1,30 @@
+name: news-aggregator
+version: 1.0.0
+description: 多源新闻聚合，抓取科技/财经类 RSS，无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 请求 RSS 源
+
+tools:
+  - id: fetch
+    description: 从预设源聚合新闻，支持指定源或数量
+    handler: news-aggregator#fetch
+    parameters:
+      type: object
+      properties:
+        sources:
+          type: array
+          items: { type: string }
+          description: 预设源 hn/tech/cn/综合，可选
+        limit:
+          type: number
+          description: 返回条数，默认 10，可选
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

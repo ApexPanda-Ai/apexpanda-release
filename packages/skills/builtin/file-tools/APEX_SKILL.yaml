@@ -1,0 +1,111 @@
+name: file-tools
+version: 1.0.0
+description: 文件读写、列表、编辑、删除
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: filesystem
+    scope: read
+    path: /workspace
+    description: 读取工作区文件
+  - id: filesystem
+    scope: write
+    path: /workspace
+    description: 写入工作区文件
+
+tools:
+  - id: read_file
+    description: 读取文件内容。path 为相对于工作区的路径
+    handler: file-tools#readFile
+    parameters:
+      type: object
+      properties:
+        path:
+          type: string
+          description: 相对工作区的文件路径
+      required: [path]
+  - id: write_file
+    description: 创建或覆盖文件。path 为相对于工作区的路径，content 为文件内容。方案、报告、清单等应保存到系统提示中指定的 output 路径下（如 output/user/xxx/solutions/）
+    handler: file-tools#writeFile
+    parameters:
+      type: object
+      properties:
+        path:
+          type: string
+          description: 相对工作区的文件路径
+        content:
+          type: string
+          description: 文件内容
+      required: [path]
+  - id: create_file
+    description: 创建文件的别名，同 write_file。path 为相对于工作区的路径，content 为文件内容。方案、报告、清单等应保存到系统提示中指定的 output 路径下
+    handler: file-tools#writeFile
+    parameters:
+      type: object
+      properties:
+        path:
+          type: string
+          description: 相对工作区的文件路径
+        content:
+          type: string
+          description: 文件内容
+      required: [path]
+  - id: list_files
+    description: 列出目录内容。执行脚本任务时，可传 path:".agent-scripts" 查看已有脚本子目录，配合 read_file 读各子目录的 README.md 判断功能是否匹配
+    handler: file-tools#listFiles
+    parameters:
+      type: object
+      properties:
+        path:
+          type: string
+          description: 相对工作区的目录路径
+      required: [path]
+  - id: list_output
+    description: 列出当前会话 scope 下的产出文档（方案、报告、清单等），按 solutions/reports/checklists 分类，按 scope 隔离。用户问「上次的方案」「之前的报告」时调用
+    handler: file-tools#listOutput
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: delete_file
+    description: 删除文件
+    handler: file-tools#deleteFile
+    parameters:
+      type: object
+      properties:
+        path:
+          type: string
+          description: 相对工作区的文件路径
+      required: [path]
+  - id: pack_zip
+    description: 将指定文件或目录打包为 ZIP 文件。paths 为文件/目录路径数组，outputPath 为输出的 zip 路径
+    handler: file-tools#packZip
+    parameters:
+      type: object
+      properties:
+        paths:
+          type: array
+          items: { type: string }
+          description: 要打包的文件或目录路径数组
+        outputPath:
+          type: string
+          description: 输出的 zip 文件路径
+      required: [paths, outputPath]
+  - id: unpack_zip
+    description: 解压 ZIP 文件到指定目录。zipPath 为 zip 文件路径，outputDir 为解压目标目录
+    handler: file-tools#unpackZip
+    parameters:
+      type: object
+      properties:
+        zipPath:
+          type: string
+          description: zip 文件路径
+        outputDir:
+          type: string
+          description: 解压目标目录
+      required: [zipPath, outputDir]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

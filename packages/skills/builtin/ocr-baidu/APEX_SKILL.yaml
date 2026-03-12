@@ -1,0 +1,38 @@
+name: ocr-baidu
+version: 1.0.0
+description: 百度 OCR（通用/票据/身份证）。需配置 BAIDU_OCR_API_KEY、BAIDU_OCR_SECRET_KEY
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用百度智能云 OCR API
+
+tools:
+  - id: recognize
+    description: 通用文字识别。支持 imageUrl（图片 URL）、dataUrl（Data URL）、base64（Base64 编码）、path（工作区路径），四选一
+    handler: ocr-baidu#recognize
+    parameters:
+      type: object
+      properties:
+        imageUrl: { type: string, description: 图片 URL，与 dataUrl/base64/path 四选一 }
+        dataUrl: { type: string, description: Data URL 格式，如 data:image/png;base64,... }
+        base64: { type: string, description: Base64 编码的图片内容 }
+        path: { type: string, description: 相对工作区的图片路径，如 .apexpanda/channel-images/xxx.png }
+      required: []
+  - id: recognizeAccurate
+    description: 高精度文字识别，适合印刷体文档。参数同 recognize
+    handler: ocr-baidu#recognizeAccurate
+    parameters:
+      type: object
+      properties:
+        imageUrl: { type: string, description: 图片 URL，与 dataUrl/base64/path 四选一 }
+        dataUrl: { type: string, description: Data URL 格式 }
+        base64: { type: string, description: Base64 编码的图片内容 }
+        path: { type: string, description: 相对工作区的图片路径 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

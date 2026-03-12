@@ -1,0 +1,25 @@
+name: wecom-message
+version: 1.0.0
+description: 企业微信应用消息推送。需配置 WECOM_CORP_ID、WECOM_AGENT_ID、WECOM_SECRET
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用企业微信消息 API
+
+tools:
+  - id: send
+    description: 向企业微信用户发送文本消息。userId 为企业微信 UserID，content 为消息内容
+    handler: wecom-message#send
+    parameters:
+      type: object
+      properties:
+        userId: { type: string, description: 企业微信 UserID }
+        content: { type: string, description: 消息内容 }
+      required: [userId, content]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

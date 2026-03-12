@@ -1,0 +1,79 @@
+name: shell-exec
+version: 1.0.0
+description: 在宿主机执行 Shell 命令。支持工作目录切换、环境变量、后台长时间任务及状态查询
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 启动子进程执行命令
+  - id: filesystem
+    scope: read
+    description: 读取工作目录
+
+tools:
+  - id: run
+    description: 执行 Shell 命令，可操作任意路径（如创建 D:\1.txt）。command 必填；cwd 为工作目录（相对 workspace 或绝对路径，绝对路径需在 APEXPANDA_SHELL_CWD_ALLOWED 白名单）；env 为环境变量；background 为 true 时后台执行。Windows 创建文件示例：New-Item -Path "D:\1.txt" -ItemType File -Force
+    handler: shell-exec#run
+    parameters:
+      type: object
+      properties:
+        command:
+          type: string
+          description: Shell 命令。创建文件、执行脚本、启动桌面应用等。Windows 启动微信 Start-Process WeChat；Mac open -a WeChat。创建文件 New-Item -Path "D:\1.txt" -ItemType File -Force
+        cwd:
+          type: string
+          description: 工作目录，可选。绝对路径需在 APEXPANDA_SHELL_CWD_ALLOWED 白名单
+        env:
+          type: object
+          description: 环境变量键值对，可选
+        background:
+          type: boolean
+          description: 是否后台执行，默认 false
+      required: [command]
+  - id: taskStatus
+    description: 查询后台任务状态。taskId 由 run(background=true) 返回
+    handler: shell-exec#taskStatus
+    parameters:
+      type: object
+      properties:
+        taskId: { type: string, description: 后台任务 ID，由 run(background=true) 返回 }
+      required: [taskId]
+  - id: taskKill
+    description: 终止后台任务
+    handler: shell-exec#taskKill
+    parameters:
+      type: object
+      properties:
+        taskId: { type: string, description: 要终止的后台任务 ID }
+      required: [taskId]
+  - id: taskList
+    description: 列出所有后台任务（由 run(background=true) 启动）
+    handler: shell-exec#taskList
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: taskLog
+    description: 获取后台任务日志。taskId 必填；offset 跳过前 N 行（可选）；limit 返回行数，默认 100
+    handler: shell-exec#taskLog
+    parameters:
+      type: object
+      properties:
+        taskId: { type: string }
+        offset: { type: number }
+        limit: { type: number }
+      required: [taskId]
+  - id: taskClear
+    description: 从列表中移除已结束的后台任务
+    handler: shell-exec#taskClear
+    parameters:
+      type: object
+      properties:
+        taskId: { type: string }
+      required: [taskId]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

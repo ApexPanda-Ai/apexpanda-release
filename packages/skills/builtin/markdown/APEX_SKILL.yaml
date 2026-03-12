@@ -1,0 +1,29 @@
+name: markdown
+version: 1.0.0
+description: Markdown 转 HTML、转纯文本
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: toHtml
+    description: 将 Markdown 转换为 HTML
+    handler: markdown#toHtml
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: Markdown 文本 }
+      required: [content]
+  - id: toPlain
+    description: 将 Markdown 转换为纯文本（去除格式）
+    handler: markdown#toPlain
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: Markdown 文本 }
+      required: [content]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

@@ -1,0 +1,24 @@
+name: web-search-quark
+version: 1.0.0
+description: 夸克搜索（quark.sm.cn），免费无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: search
+    description: 夸克搜索关键词，返回结果标题、链接及摘要
+    handler: web-search-quark#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 搜索关键词 }
+        maxResults: { type: number, description: 最大结果数，默认 5 }
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
