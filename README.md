@@ -27,6 +27,7 @@
 ---
 
 ## ApexPanda平台架构
+<img width="2730" height="1535" alt="生成 ApexPanda 平台架构图(1)" src="https://github.com/user-attachments/assets/02f331cf-718c-4610-8b86-9244eabd523f" />
 
 
 **架构说明：**
@@ -42,6 +43,7 @@
 ## 消息执行流程
 
 用户通过渠道（如飞书群）发送消息后的处理链路：
+<img width="2730" height="1535" alt="生成 ApexPanda 平台架构图 (2)(1)" src="https://github.com/user-attachments/assets/6743cec8-ad96-42de-bdc5-55c5e91ff605" />
 
 
 
@@ -60,6 +62,7 @@
 
 定时、Webhook 或消息触发工作流时，引擎按 DAG 拓扑序执行节点：
 
+<img width="2730" height="1535" alt="生成 ApexPanda 平台架构图 (4)(1)" src="https://github.com/user-attachments/assets/268b6389-aae4-4062-a8d9-baac692bdb8f" />
 
 
 ## 功能概览
