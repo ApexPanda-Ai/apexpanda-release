@@ -1,0 +1,70 @@
+name: github
+version: 1.0.0
+description: GitHub 仓库操作、Issue、PR、代码审查。需 GITHUB_TOKEN
+author: ApexPanda
+license: MIT
+
+category: 开发与代码
+envFields:
+  - key: GITHUB_TOKEN
+    label: Personal Access Token
+    type: password
+    placeholder: github_pat_xxxxx
+    group: GitHub
+
+defaultParams:
+  listRepos: '{"limit":20}'
+  getFile: '{"owner":"octocat","repo":"Hello-World","path":"README.md"}'
+  createIssue: '{"owner":"owner","repo":"repo","title":"Bug: xxxx","body":"请描述问题"}'
+  listIssues: '{"owner":"owner","repo":"repo","state":"open","limit":20}'
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用 GitHub API
+
+tools:
+  - id: listRepos
+    description: 列出当前用户的仓库列表
+    handler: github#listRepos
+    parameters:
+      type: object
+      properties:
+        limit: { type: number, description: 返回数量，默认 20 }
+      required: []
+  - id: getFile
+    description: 获取仓库文件内容。owner/repo 为仓库，path 为文件路径
+    handler: github#getFile
+    parameters:
+      type: object
+      properties:
+        owner: { type: string, description: 仓库所有者 }
+        repo: { type: string, description: 仓库名 }
+        path: { type: string, description: 文件路径 }
+      required: [owner, repo, path]
+  - id: createIssue
+    description: 创建 Issue。owner/repo 为仓库，title 和 body 为标题和正文
+    handler: github#createIssue
+    parameters:
+      type: object
+      properties:
+        owner: { type: string }
+        repo: { type: string }
+        title: { type: string, description: Issue 标题 }
+        body: { type: string, description: Issue 正文 }
+      required: [owner, repo, title]
+  - id: listIssues
+    description: 列出仓库 Issue 列表
+    handler: github#listIssues
+    parameters:
+      type: object
+      properties:
+        owner: { type: string }
+        repo: { type: string }
+        state: { type: string, description: open 或 closed }
+        limit: { type: number }
+      required: [owner, repo]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

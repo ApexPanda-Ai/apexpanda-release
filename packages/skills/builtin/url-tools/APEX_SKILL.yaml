@@ -1,0 +1,39 @@
+name: url-tools
+version: 1.0.0
+description: URL 编码/解码，用于构建或解析查询字符串
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: encode
+    description: 将字符串进行 URL 编码（encodeURIComponent）
+    handler: url-tools#encode
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 要编码的字符串 }
+      required: [text]
+  - id: decode
+    description: 将 URL 编码的字符串解码
+    handler: url-tools#decode
+    parameters:
+      type: object
+      properties:
+        encoded: { type: string, description: URL 编码的字符串 }
+      required: [encoded]
+  - id: parse
+    description: 解析 URL 为组成部分（协议、主机、路径、查询参数等）
+    handler: url-tools#parse
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 要解析的完整 URL }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

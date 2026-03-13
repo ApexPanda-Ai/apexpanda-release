@@ -1,0 +1,41 @@
+name: process-monitor
+version: 1.0.0
+description: 系统进程与网络监控，列出运行的程序、网络连接、端口占用，回答「电脑在干嘛」
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 执行系统命令获取进程与网络信息
+
+tools:
+  - id: summary
+    description: 电脑在干嘛/系统概览。返回主机名、CPU/内存/运行时间、Top 进程、网络连接摘要。用户问「电脑在干嘛」「现在在干什么」时优先调用
+    handler: process-monitor#summary
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: list
+    description: 列出系统所有运行进程。Windows 用 tasklist，Linux/Mac 用 ps。用户问「运行的程序」「有哪些进程」时调用
+    handler: process-monitor#list
+    parameters:
+      type: object
+      properties:
+        limit: { type: number, description: 最大进程数，默认 50 }
+      required: []
+  - id: net
+    description: 列出网络连接（端口、远程地址、状态）。用户问「网络连接」「谁在连 443」时调用
+    handler: process-monitor#net
+    parameters:
+      type: object
+      properties:
+        establishedOnly: { type: boolean, description: 仅已建立连接，默认 true }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

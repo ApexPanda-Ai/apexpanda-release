@@ -1,0 +1,25 @@
+name: web-search-google
+version: 1.0.0
+description: Google 搜索（国际首选）。需 GOOGLE_CSE_API_KEY、GOOGLE_CSE_CX（Programmable Search Engine ID）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问 Google Custom Search API
+
+tools:
+  - id: search
+    description: Google 搜索关键词，返回结果标题、链接及摘要（国际内容优先）
+    handler: web-search-google#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 搜索关键词 }
+        maxResults: { type: number, description: 最大结果数，默认 5 }
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,28 @@
+name: image-gen-wanx
+version: 1.0.0
+description: 通义万相文生图（国产）。需配置 DASHSCOPE_API_KEY，在阿里云百炼控制台获取 https://bailian.console.aliyun.com/cn-beijing/?tab=api#/api
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用阿里云百炼 DashScope 通义万相 API
+
+tools:
+  - id: generate
+    description: 根据文本提示词生成图片（文生图）。prompt 描述期望画面，size 默认 1280*1280，n 为 1-4 张。模型 wan2.6-t2i，支持中英文 prompt
+    handler: image-gen-wanx#generate
+    parameters:
+      type: object
+      properties:
+        prompt: { type: string, description: 图片描述 }
+        size: { type: string, description: 尺寸，默认 1280*1280 }
+        n: { type: number, description: 生成张数 1-4，默认 1 }
+        negativePrompt: { type: string, description: 负面提示词，可选 }
+        promptExtend: { type: boolean, description: 是否扩展提示词，默认 true }
+      required: [prompt]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

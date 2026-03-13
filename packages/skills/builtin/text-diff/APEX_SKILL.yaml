@@ -1,0 +1,33 @@
+name: text-diff
+version: 1.0.0
+description: 文本对比，输出行级 diff（新增/删除/未变），用于代码或文档变更对比
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: compare
+    description: 对比两段文本，按行输出新增、删除、未变更的内容
+    handler: text-diff#compare
+    parameters:
+      type: object
+      properties:
+        textA: { type: string, description: 第一段文本 }
+        textB: { type: string, description: 第二段文本 }
+      required: [textA, textB]
+  - id: compareWithDelimiter
+    description: 从单段文本（按分隔符拆成两段）对比，分隔符默认 ---
+    handler: text-diff#compareWithDelimiter
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 含分隔符的完整文本 }
+        delimiter: { type: string, description: 分隔符，默认 --- }
+      required: [text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

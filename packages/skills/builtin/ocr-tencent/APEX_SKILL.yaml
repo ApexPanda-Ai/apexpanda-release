@@ -1,0 +1,48 @@
+name: ocr-tencent
+category: 多媒体
+envFields:
+  - key: TENCENT_SECRET_ID
+    label: SecretId
+    type: password
+    group: 腾讯云
+  - key: TENCENT_SECRET_KEY
+    label: SecretKey
+    type: password
+    group: 腾讯云
+version: 1.0.0
+description: 腾讯云 OCR（中文识别优秀）。需配置 TENCENT_SECRET_ID、TENCENT_SECRET_KEY
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用腾讯云 OCR API
+
+tools:
+  - id: recognize
+    description: 通用文字识别。支持 imageUrl、dataUrl、base64、path 四选一
+    handler: ocr-tencent#recognize
+    parameters:
+      type: object
+      properties:
+        imageUrl: { type: string, description: 图片 URL，与 dataUrl/base64/path 四选一 }
+        dataUrl: { type: string, description: Data URL 格式 }
+        base64: { type: string, description: Base64 编码的图片内容 }
+        path: { type: string, description: 相对工作区的图片路径 }
+      required: []
+  - id: recognizeAccurate
+    description: 高精度文字识别，适合印刷体文档
+    handler: ocr-tencent#recognizeAccurate
+    parameters:
+      type: object
+      properties:
+        imageUrl: { type: string, description: 图片 URL，与 dataUrl/base64/path 四选一 }
+        dataUrl: { type: string, description: Data URL 格式 }
+        base64: { type: string, description: Base64 编码的图片内容 }
+        path: { type: string, description: 相对工作区的图片路径 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

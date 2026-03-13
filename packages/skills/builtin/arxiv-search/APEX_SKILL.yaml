@@ -1,0 +1,25 @@
+name: arxiv-search
+version: 1.0.0
+description: 学术论文搜索（arXiv），无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 请求 arXiv API
+
+tools:
+  - id: search
+    description: 按关键词搜索 arXiv 论文，返回标题、摘要、作者、链接
+    handler: arxiv-search#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 搜索关键词 }
+        maxResults: { type: number, description: 最大结果数 1-20，默认 5 }
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,26 @@
+name: speech-to-text
+version: 1.0.0
+description: 语音识别（ASR），将音频转为文字。支持飞书 file_key、音频 URL、Base64。Lark/飞书发语音消息时自动解析并回复
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: recognize
+    description: 识别语音转文字。支持 fileKey+messageId（飞书语音消息）、audioUrl（音频 URL）、audioBase64（Base64 编码音频），三选一
+    handler: speech-to-text#recognize
+    parameters:
+      type: object
+      properties:
+        fileKey: { type: string, description: 飞书语音消息的 file_key，需与 messageId 同时提供 }
+        messageId: { type: string, description: 飞书消息 ID，与 fileKey 配合下载语音 }
+        audioUrl: { type: string, description: 音频文件 URL，可选 }
+        audioBase64: { type: string, description: Base64 编码的音频，可选 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

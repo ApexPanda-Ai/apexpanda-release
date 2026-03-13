@@ -1,0 +1,26 @@
+name: translate-baidu
+version: 1.0.0
+description: 百度翻译（200+ 语种）。需配置 BAIDU_TRANSLATE_APPID、BAIDU_TRANSLATE_SECRET
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用百度翻译 API
+
+tools:
+  - id: translate
+    description: 将文本翻译为指定语言。from 默认 auto 自动检测，to 如 zh/en/jp
+    handler: translate-baidu#translate
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 待翻译文本 }
+        from: { type: string, description: 源语言如 auto/zh/en，默认 auto }
+        to: { type: string, description: 目标语言如 zh/en/jp }
+      required: [text, to]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

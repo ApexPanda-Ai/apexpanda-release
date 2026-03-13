@@ -1,0 +1,35 @@
+name: map-baidu
+version: 1.0.0
+description: 百度地图 POI 搜索、区域检索。需 BAIDU_MAP_AK（百度地图开放平台 AK）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问百度地图 Place API
+
+tools:
+  - id: search
+    description: 关键字搜索 POI。query 关键词，region 城市名（如北京、上海）
+    handler: map-baidu#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 搜索关键词 }
+        region: { type: string, description: 城市名如 北京、上海 }
+      required: [query]
+  - id: around
+    description: 周边检索。location 经纬度"经度,纬度"，radius 半径米数，keyword 关键词
+    handler: map-baidu#around
+    parameters:
+      type: object
+      properties:
+        location: { type: string, description: 中心点 经度,纬度 }
+        keyword: { type: string, description: 搜索关键词 }
+        radius: { type: number, description: 半径米数，默认 1000 }
+      required: [location, keyword]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

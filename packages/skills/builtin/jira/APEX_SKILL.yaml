@@ -1,0 +1,44 @@
+name: jira
+version: 1.0.0
+description: Jira 任务查询、创建、状态更新。需配置 JIRA_BASE_URL、JIRA_EMAIL、JIRA_API_TOKEN
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用 Jira REST API
+
+tools:
+  - id: search
+    description: 按 JQL 搜索 Issue。jql 为查询语句，maxResults 默认 50
+    handler: jira#search
+    parameters:
+      type: object
+      properties:
+        jql: { type: string, description: JQL 查询语句 }
+        maxResults: { type: number, description: 最大结果数，默认 50 }
+      required: [jql]
+  - id: create
+    description: 创建 Issue。projectKey 项目键，summary 摘要，issueType 类型默认 Task，description 可选
+    handler: jira#create
+    parameters:
+      type: object
+      properties:
+        projectKey: { type: string, description: 项目键 }
+        summary: { type: string, description: Issue 摘要 }
+        description: { type: string, description: 详细描述，可选 }
+        issueType: { type: string, description: 类型如 Task/Bug，默认 Task }
+      required: [projectKey, summary]
+  - id: get
+    description: 获取单个 Issue 详情。issueKey 如 PROJ-123
+    handler: jira#get
+    parameters:
+      type: object
+      properties:
+        issueKey: { type: string, description: Issue 键如 PROJ-123 }
+      required: [issueKey]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

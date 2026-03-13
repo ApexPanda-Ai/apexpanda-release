@@ -1,0 +1,29 @@
+name: screen-capture
+version: 1.0.0
+description: 电脑桌面截屏，支持全屏或指定区域截图，返回 base64 图片。基于 Nut.js，支持 Windows / macOS / Linux
+author: ApexPanda
+license: MIT
+
+category: 设备控制
+
+defaultParams:
+  capture: '{}'
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 调用 Nut.js 截取屏幕
+
+tools:
+  - id: capture
+    description: 截取电脑屏幕。不传参数则截全屏；region 为 {x,y,width,height} 时可截取指定区域
+    handler: screen-capture#capture
+    parameters:
+      type: object
+      properties:
+        region: { type: object, description: '截取区域 {x,y,width,height}，不传则全屏' }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

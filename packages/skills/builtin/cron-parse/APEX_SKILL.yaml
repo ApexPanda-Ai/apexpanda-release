@@ -1,0 +1,33 @@
+name: cron-parse
+version: 1.0.0
+description: 解析 Cron 表达式，计算下次/未来 N 次执行时间，用于定时任务配置
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: next
+    description: 解析 cron 表达式，返回下次及未来 N 次执行时间（ISO 格式）
+    handler: cron-parse#next
+    parameters:
+      type: object
+      properties:
+        expression: { type: string, description: cron 表达式，如 0 9 * * * }
+        count: { type: number, description: 返回未来次数，默认 5 }
+        timezone: { type: string, description: 时区，可选 }
+      required: [expression]
+  - id: validate
+    description: 校验 cron 表达式是否合法
+    handler: cron-parse#validate
+    parameters:
+      type: object
+      properties:
+        expression: { type: string, description: cron 表达式 }
+      required: [expression]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

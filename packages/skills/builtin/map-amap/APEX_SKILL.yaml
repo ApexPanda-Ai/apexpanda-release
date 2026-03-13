@@ -1,0 +1,46 @@
+name: map-amap
+version: 1.0.0
+description: 高德地图 POI 搜索、周边检索、路线规划。需配置 AMAP_WEB_SERVICE_KEY（高德开放平台 Web 服务 Key）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问高德 Web 服务 API
+
+tools:
+  - id: search
+    description: 关键字搜索 POI（如餐厅、银行、肯德基）。keywords 必填，city 可选（如北京、上海）缩小范围
+    handler: map-amap#search
+    parameters:
+      type: object
+      properties:
+        keywords: { type: string, description: 搜索关键词，如 肯德基、银行、餐厅 }
+        city: { type: string, description: 城市名，可选，如 北京、上海 }
+        page: { type: number, description: 页码，默认 1 }
+      required: [keywords]
+  - id: around
+    description: 周边搜索。location 为中心点经纬度"经度,纬度"，keywords 或 types 至少一个，radius 为半径米数
+    handler: map-amap#around
+    parameters:
+      type: object
+      properties:
+        location: { type: string, description: 中心点经纬度，格式 经度,纬度，如 116.473168,39.993015 }
+        keywords: { type: string, description: 搜索关键词，与 types 二选一 }
+        types: { type: string, description: POI 类型代码，与 keywords 二选一 }
+        radius: { type: number, description: 半径（米），默认 3000 }
+      required: [location]
+  - id: driving
+    description: 驾车路线规划。origin 和 destination 为"经度,纬度"或地址，返回距离、时间、步骤
+    handler: map-amap#driving
+    parameters:
+      type: object
+      properties:
+        origin: { type: string, description: 起点，经纬度 经度,纬度 或地址 }
+        destination: { type: string, description: 终点，经纬度或地址 }
+      required: [origin, destination]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

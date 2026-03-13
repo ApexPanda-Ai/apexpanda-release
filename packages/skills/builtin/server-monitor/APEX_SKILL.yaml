@@ -1,0 +1,20 @@
+name: server-monitor
+version: 1.0.0
+description: 服务器 CPU、内存、运行时间监控（仅聚合指标，不含进程列表与网络连接）
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: status
+    description: 仅获取 CPU、内存、运行时间等聚合指标。不包含进程列表或网络连接。若需「电脑在干嘛」「运行的程序」「网络连接」，请用 process-monitor_summary
+    handler: server-monitor#status
+    parameters:
+      type: object
+      properties: {}
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

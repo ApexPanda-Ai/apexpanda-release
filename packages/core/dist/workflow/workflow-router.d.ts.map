@@ -1,0 +1,1 @@
+{"version":3,"file":"workflow-router.d.ts","sourceRoot":"","sources":["../../src/workflow/workflow-router.ts"],"names":[],"mappings":"AAUA,MAAM,WAAW,mBAAmB;IAClC,UAAU,EAAE,MAAM,CAAC;IACnB,YAAY,EAAE,MAAM,CAAC;IACrB,kCAAkC;IAClC,YAAY,EAAE,MAAM,CAAC;CACtB;AAKD;;;;;GAKG;AACH,wBAAsB,oBAAoB,CACxC,OAAO,EAAE,MAAM,EACf,OAAO,EAAE,MAAM,GACd,OAAO,CAAC,mBAAmB,GAAG,IAAI,CAAC,CAmCrC"}

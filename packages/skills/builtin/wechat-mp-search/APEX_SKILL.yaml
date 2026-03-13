@@ -1,0 +1,33 @@
+name: wechat-mp-search
+version: 1.0.0
+description: 搜狗微信搜索，按关键词搜索微信公众号文章。使用 https://weixin.sogou.com 获取文章标题、摘要与链接，无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问搜狗微信搜索
+
+tools:
+  - id: search
+    description: 按关键词搜索微信公众号文章，返回标题、摘要、链接。用户说「搜公众号」「搜索公众号文章」「公众号里搜XXX」时用此工具
+    handler: wechat-mp-search#search
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: 搜索关键词。用户说「搜公众号」「搜索公众号文章」「公众号里搜XXX」「微信文章 XXX」时用此工具搜索微信公众号文章
+        maxResults:
+          type: number
+          description: 最大结果数，默认 5，可选
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+category: 搜索与内容
+defaultParams:
+  search: '{"query":"人工智能"}'

@@ -1,0 +1,27 @@
+name: image-gen-dalle
+version: 1.0.0
+description: DALL-E 图片生成。需 OpenAI API Key（或兼容的 Images API）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用 OpenAI Images API
+
+tools:
+  - id: generate
+    description: 根据文字描述生成图片。prompt 为描述，size 可选 256x256/512x512/1024x1024/1792x1024/1024x1792
+    handler: image-gen-dalle#generate
+    parameters:
+      type: object
+      properties:
+        prompt: { type: string, description: 图片描述，如「一只橘猫在阳光下睡觉」 }
+        size: { type: string, description: 尺寸 256x256/512x512/1024x1024，默认 1024x1024 }
+        model: { type: string, description: dall-e-2 或 dall-e-3，默认 dall-e-2 }
+        n: { type: number, description: 生成数量 1-10 }
+      required: [prompt]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

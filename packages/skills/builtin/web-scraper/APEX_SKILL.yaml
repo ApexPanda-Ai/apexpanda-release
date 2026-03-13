@@ -1,0 +1,26 @@
+name: web-scraper
+version: 1.0.0
+description: 结构化网页数据采集，支持 CSS 选择器提取、表格解析，免费无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: scrape
+    description: 抓取网页并按 CSS 选择器提取结构化数据。selectors 为 { "字段名": "选择器" }，可提取表格（extractTables: true）
+    handler: web-scraper#scrape
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 要抓取的 URL }
+        selectors: { type: object, description: 字段名到 CSS 选择器的映射，如 {"title": "h1", "content": ".main"} }
+        extractTables: { type: boolean, description: 是否提取表格，默认 false }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

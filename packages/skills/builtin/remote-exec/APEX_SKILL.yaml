@@ -1,0 +1,94 @@
+name: remote-exec
+version: 1.0.0
+description: 通过 SSH 在远程服务器执行命令，支持多主机并发。当用户说「交给虚拟机执行」「在 Linux 上运行」「远程执行」「连接服务器」「自动化执行」时应调用
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: SSH 连接远程
+  - id: process
+    scope: spawn
+    description: 本地 SSH 客户端
+
+tools:
+  - id: run
+    description: 在远程主机执行单条命令。host 为 IP 或域名；command 为命令；可选 timeout（毫秒，默认 120000）、outputFile（输出写入远程文件，用 download 拉取）；username、password 或 privateKey 认证；port 默认 22
+    handler: remote-exec#run
+    parameters:
+      type: object
+      properties:
+        host:
+          type: string
+          description: 远程主机 IP 或域名；可通过 APEXPANDA_REMOTE_DEFAULT_HOST 配置默认 host
+        command:
+          type: string
+          description: 要执行的命令
+        username: { type: string, description: 用户名，默认 root }
+        password: { type: string, description: 密码认证，与 privateKey 二选一 }
+        privateKey: { type: string, description: 私钥认证 }
+        port: { type: number, description: SSH 端口，默认 22 }
+        timeout: { type: number, description: 超时毫秒数，默认 120000，长任务可设更大 }
+        outputFile: { type: string, description: 若指定，stdout+stderr 写入该远程路径，避免截断；后续用 download 拉取 }
+      required: [host, command]
+  - id: runScript
+    description: 在远程主机执行多行脚本。host 为 IP 或域名；script 为要执行的 bash 脚本内容（多行）；可选 timeout（毫秒，默认 300000）；用于安装工具、批量操作等
+    handler: remote-exec#runScript
+    parameters:
+      type: object
+      properties:
+        host: { type: string, description: 远程主机 IP 或域名 }
+        script: { type: string, description: 要执行的脚本内容（多行 bash），会写入 /tmp 后执行 }
+        username: { type: string, description: 用户名，默认 root }
+        password: { type: string, description: 密码认证，与 privateKey 二选一 }
+        privateKey: { type: string, description: 私钥认证 }
+        port: { type: number, description: SSH 端口，默认 22 }
+        timeout: { type: number, description: 超时毫秒数，默认 300000，适合安装工具等长耗时脚本 }
+      required: [host, script]
+  - id: runMultiple
+    description: 在多个主机上并发执行相同命令。hosts 为 host 数组，每项可含 host/username/password/privateKey；command 为命令
+    handler: remote-exec#runMultiple
+    parameters:
+      type: object
+      properties:
+        hosts:
+          type: array
+          items: { type: object }
+          description: 主机配置数组，每项可含 host/username/password/privateKey
+        command:
+          type: string
+          description: 要执行的命令
+      required: [hosts, command]
+  - id: upload
+    description: SFTP 上传文件到远程。host、localPath（本地路径，相对 workspace）、remotePath 必填
+    handler: remote-exec#upload
+    parameters:
+      type: object
+      properties:
+        host: { type: string }
+        localPath: { type: string, description: 本地路径，相对 workspace }
+        remotePath: { type: string, description: 远程路径 }
+        username: { type: string }
+        password: { type: string }
+        privateKey: { type: string }
+        port: { type: number }
+      required: [host, localPath, remotePath]
+  - id: download
+    description: SFTP 从远程下载文件。host、remotePath、localPath（保存路径，相对 workspace）必填
+    handler: remote-exec#download
+    parameters:
+      type: object
+      properties:
+        host: { type: string }
+        remotePath: { type: string }
+        localPath: { type: string, description: 保存路径，相对 workspace }
+        username: { type: string }
+        password: { type: string }
+        privateKey: { type: string }
+        port: { type: number }
+      required: [host, remotePath, localPath]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

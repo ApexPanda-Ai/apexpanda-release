@@ -1,0 +1,41 @@
+name: yuque-doc
+version: 1.0.0
+description: 语雀文档读写。需配置 YUQUE_TOKEN
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用语雀开放 API
+
+tools:
+  - id: read
+    description: 读取语雀文档内容。namespace 为知识库 namespace（如 user/repo），slug 为文档 slug，raw=true 返回 Markdown
+    handler: yuque-doc#read
+    parameters:
+      type: object
+      properties:
+        namespace: { type: string, description: 知识库 namespace，如 user/repo }
+        slug: { type: string, description: 文档 slug }
+        raw: { type: boolean, description: 返回 Markdown，默认 true }
+      required: [namespace, slug]
+  - id: listRepos
+    description: 列出当前用户的知识库列表
+    handler: yuque-doc#listRepos
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: getToc
+    description: 获取知识库目录结构。namespace 为知识库 namespace
+    handler: yuque-doc#getToc
+    parameters:
+      type: object
+      properties:
+        namespace: { type: string, description: 知识库 namespace }
+      required: [namespace]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

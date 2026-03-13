@@ -1,0 +1,25 @@
+name: web-search-brave
+version: 1.0.0
+description: Brave 搜索（国际，隐私友好）。需 BRAVE_API_KEY
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问 Brave Search API
+
+tools:
+  - id: search
+    description: 使用 Brave 搜索引擎进行网页搜索
+    handler: web-search-brave#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 搜索关键词 }
+        count: { type: number, description: 结果数，默认 5 }
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

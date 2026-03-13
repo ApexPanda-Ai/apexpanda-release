@@ -1,0 +1,1 @@
+{"version":3,"file":"store.d.ts","sourceRoot":"","sources":["../../src/shortlink/store.ts"],"names":[],"mappings":"AAAA;;;GAGG;AACH,MAAM,WAAW,cAAc;IAC7B,GAAG,EAAE,MAAM,CAAC;IACZ,SAAS,EAAE,MAAM,CAAC;CACnB;AAED,eAAO,MAAM,cAAc,6BAAoC,CAAC;AAIhE,wBAAgB,iBAAiB,IAAI,MAAM,CAM1C"}

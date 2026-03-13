@@ -1,0 +1,22 @@
+name: json-path
+version: 1.0.0
+description: 按路径从 JSON 提取值，支持点号与数组下标
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: extract
+    description: 从 JSON 对象按路径提取值，如 data.items[0].name
+    handler: json-path#extract
+    parameters:
+      type: object
+      properties:
+        data: { type: object, description: JSON 对象或 JSON 字符串 }
+        path: { type: string, description: '提取路径，如 data.items[0].name' }
+      required: [data, path]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

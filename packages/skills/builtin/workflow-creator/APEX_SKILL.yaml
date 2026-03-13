@@ -1,0 +1,66 @@
+name: workflow-creator
+version: 1.0.0
+description: 创建工作流。Agent 可根据用户描述创建预设模板工作流或自定义 DAG 工作流
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: workflow
+    scope: create
+    description: 创建工作流定义
+
+tools:
+  - id: create_from_template
+    description: 从预设模板创建工作流。templateId 可选 daily-report/weekly-report/meeting-minutes/news-brief/translate/customer-service-routing/competitor-monitor/data-brief。name 覆盖模板名称，cron 为定时表达式如 0 9 * * *
+    handler: workflow-creator#create_from_template
+    parameters:
+      type: object
+      properties:
+        templateId:
+          type: string
+          description: 模板 ID daily-report/weekly-report/meeting-minutes/news-brief/translate/customer-service-routing/competitor-monitor/public-opinion-monitor/data-brief
+        name:
+          type: string
+          description: 工作流名称，覆盖模板默认名
+        cron:
+          type: string
+          description: cron 表达式，如 0 9 * * * 每天9点
+      required: [templateId]
+  - id: create_custom
+    description: 创建自定义 DAG 工作流。nodes 为节点数组，每项 { id, type(agent|skill|human), config }；edges 为边数组 { from, to }。skill 节点 config 需含 skillName,toolId,params；agent 节点含 message,agentId 可选；human 节点含 prompt
+    handler: workflow-creator#create_custom
+    parameters:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 工作流名称
+        description:
+          type: string
+          description: 描述，可选
+        nodes:
+          type: array
+          description: 节点数组。每项 { id, type(agent|skill|human), config }。skill 的 config 含 skillName,toolId,params；agent 含 message,agentId 可选；human 含 prompt
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              type: { type: string }
+              config: { type: object }
+        edges:
+          type: array
+          description: 边数组，每项 { from, to } 为节点 id
+          items:
+            type: object
+            properties:
+              from: { type: string }
+              to: { type: string }
+        triggers:
+          type: array
+          items: { type: object }
+          description: 触发配置，可选。{ type message|cron, command?, expression?, enabled? }
+      required: [name, nodes]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

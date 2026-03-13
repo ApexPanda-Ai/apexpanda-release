@@ -1,0 +1,24 @@
+name: feishu-doc
+version: 1.0.0
+description: 飞书云文档读取（纯文本）。需配置 FEISHU_APP_ID、FEISHU_APP_SECRET
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用飞书开放平台文档 API
+
+tools:
+  - id: read
+    description: 读取飞书云文档纯文本内容。documentId 从文档 URL 或文档 ID 获取
+    handler: feishu-doc#read
+    parameters:
+      type: object
+      properties:
+        documentId: { type: string, description: 文档 ID，从 URL 或 document_id 获取 }
+      required: [documentId]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

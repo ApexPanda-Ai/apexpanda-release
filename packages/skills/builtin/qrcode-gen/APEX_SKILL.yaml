@@ -1,0 +1,34 @@
+name: qrcode-gen
+version: 1.0.0
+description: 二维码生成与解析，将文本转为 QR Code 或从图片解析出文本
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: generate
+    description: 将文本或 URL 生成二维码图片，返回 Data URL（可直接嵌入 HTML）
+    handler: qrcode-gen#generate
+    parameters:
+      type: object
+      properties:
+        data: { type: string, description: 要编码的文本或 URL }
+        size: { type: number, description: 图片边长像素，默认 200 }
+      required: [data]
+  - id: decode
+    description: 从二维码图片解析出文本。支持 imageUrl（图片 URL）、dataUrl（Data URL）、base64（Base64 编码）
+    handler: qrcode-gen#decode
+    parameters:
+      type: object
+      properties:
+        imageUrl: { type: string, description: 图片 URL }
+        dataUrl: { type: string, description: Data URL }
+        base64: { type: string, description: Base64 编码的图片 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

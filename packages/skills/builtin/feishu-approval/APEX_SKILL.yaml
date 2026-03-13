@@ -1,0 +1,36 @@
+name: feishu-approval
+version: 1.0.0
+description: 飞书审批流查询与发起。需配置 FEISHU_APP_ID、FEISHU_APP_SECRET
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用飞书开放平台审批 API
+
+tools:
+  - id: create
+    description: 发起审批。approvalCode 为审批定义 code，form 为表单数据 JSON 对象，userId 为发起人 open_id
+    handler: feishu-approval#create
+    parameters:
+      type: object
+      properties:
+        approvalCode: { type: string, description: 审批定义 code }
+        form: { type: object, description: 表单数据 JSON }
+        userId: { type: string, description: 发起人 open_id }
+      required: [approvalCode, form, userId]
+  - id: query
+    description: 查询审批实例列表。approvalCode 可选，startTime/endTime 为时间范围（毫秒时间戳）
+    handler: feishu-approval#query
+    parameters:
+      type: object
+      properties:
+        approvalCode: { type: string, description: 审批定义 code，可选 }
+        startTime: { type: number, description: 开始时间毫秒时间戳 }
+        endTime: { type: number, description: 结束时间毫秒时间戳 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

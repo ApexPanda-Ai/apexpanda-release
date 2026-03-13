@@ -1,0 +1,40 @@
+name: calculator
+version: 1.0.0
+description: 数学计算、时间获取、UUID 生成
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: calculate
+    description: 执行数学表达式计算
+    handler: calculator#calculate
+    parameters:
+      type: object
+      properties:
+        expr: { type: string, description: 数学表达式 }
+      required: [expr]
+  - id: get_time
+    description: 获取当前日期时间
+    handler: calculator#getTime
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: generate_uuid
+    description: 生成唯一标识符
+    handler: calculator#generateUuid
+    parameters:
+      type: object
+      properties: {}
+      required: []
+
+defaultParams:
+  calculate: '{"expr":"1+2*3"}'
+  get_time: '{}'
+  generate_uuid: '{}'
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

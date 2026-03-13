@@ -1,0 +1,38 @@
+name: shortlink
+version: 1.0.0
+description: 自托管短链生成与解析，无需外部服务，支持自定义短码
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: create
+    description: 将长链接转为短链，可指定自定义短码或自动生成
+    handler: shortlink#create
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 原始长链接，需 http(s) 开头 }
+        slug: { type: string, description: 自定义短码，可选 }
+      required: [url]
+  - id: resolve
+    description: 根据短码解析出原始长链接
+    handler: shortlink#resolve
+    parameters:
+      type: object
+      properties:
+        shortCode: { type: string, description: 短码 }
+      required: [shortCode]
+  - id: list
+    description: 列出所有已创建的短链
+    handler: shortlink#list
+    parameters:
+      type: object
+      properties:
+        limit: { type: number, description: 返回条数，默认 20 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
