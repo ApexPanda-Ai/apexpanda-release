@@ -523,14 +523,6 @@ Data in `.apexpanda/`: config.json, agents.json, workflows.json, memory.json, sk
 
 ---
 
-## ApexPanda vs OpenClaw
-
-Self-hosted AI platforms, independent implementations. ApexPanda: enterprise—DingTalk/WeCom/Feishu, RBAC, audit, sensitive-word filter, DAG workflow, knowledge RAG, multi-agent, MCP. OpenClaw: personal—50+ channels, ClawHub skills, iOS/Voice Wake.
-
-Enterprise/compliance/China office → ApexPanda; personal/max channels → OpenClaw. See [docs/APEXPANDA_VS_OPENCLAW.md](./docs/APEXPANDA_VS_OPENCLAW.md).
-
----
-
 ## License
 
 MIT License
