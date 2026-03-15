@@ -568,14 +568,6 @@ curl -fsSL https://www.apexpanda.net/install-docker-and-pull.sh | sudo bash
 
 ---
 
-## ApexPanda 与 OpenClaw
-
-自托管 AI 平台，各自独立实现。ApexPanda 侧重企业：钉钉/企微/飞书、RBAC、审计、敏感词、DAG 工作流、知识库 RAG、多 Agent、MCP。OpenClaw 侧重个人：50+ 渠道、ClawHub 技能、iOS/Voice Wake。
-
-企业/合规/国内办公 → ApexPanda；个人/多渠道 → OpenClaw。详见 [docs/APEXPANDA_VS_OPENCLAW.md](./docs/APEXPANDA_VS_OPENCLAW.md)。
-
----
-
 ## 许可证
 
 MIT License
