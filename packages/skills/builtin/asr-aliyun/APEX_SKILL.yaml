@@ -1,0 +1,29 @@
+name: asr-aliyun
+version: 1.0.0
+description: 阿里云智能语音一句话识别。需配置 ALIYUN_ACCESS_KEY_ID、ALIYUN_ACCESS_KEY_SECRET、ALIYUN_NLS_APPKEY（与 tts-aliyun 共用）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用阿里云智能语音交互 ASR API
+
+tools:
+  - id: recognize
+    description: 语音转文字。支持 audioUrl、dataUrl、base64 或 audioAddress（公网音频 URL）。format 默认 wav，sampleRate 默认 16000，enablePunctuation 默认 true
+    handler: asr-aliyun#recognize
+    parameters:
+      type: object
+      properties:
+        audioUrl: { type: string, description: 公网音频 URL }
+        dataUrl: { type: string, description: Data URL }
+        base64: { type: string, description: Base64 编码的音频 }
+        audioAddress: { type: string, description: 公网音频地址 }
+        format: { type: string, description: 格式如 wav，默认 wav }
+        sampleRate: { type: number, description: 采样率，默认 16000 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

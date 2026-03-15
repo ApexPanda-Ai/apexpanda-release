@@ -1,0 +1,138 @@
+name: android-emulator
+version: 1.2.0
+description: 通过 ADB 控制 Android 模拟器或真机，支持点击、滑动、输入、按键、截屏、安装 APK、上传/下载文件等
+author: ApexPanda
+license: MIT
+
+category: 设备控制
+openclawMeta:
+  requires:
+    bins: ['adb']
+
+defaultParams:
+  listDevices: '{}'
+  tap: '{"x":100,"y":200}'
+  swipe: '{"x1":100,"y1":500,"x2":100,"y2":200}'
+  inputText: '{"text":"hello"}'
+  keyEvent: '{"keycode":"BACK"}'
+  screencap: '{}'
+  installApk: '{"apkPath":"./app.apk"}'
+  launchApp: '{"package":"com.android.chrome"}'
+  pushFile: '{"localPath":"./file.txt","remotePath":"/sdcard/Download/file.txt"}'
+  pullFile: '{"remotePath":"/sdcard/Download/file.txt"}'
+  shell: '{"command":"getprop ro.build.version.release"}'
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 执行 ADB 命令
+
+tools:
+  - id: listDevices
+    description: 列出已连接的 Android 设备/模拟器。返回设备 ID 列表，用于多设备时指定 deviceId
+    handler: android-emulator#listDevices
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: tap
+    description: 在屏幕指定坐标 (x, y) 点击。deviceId 可选，多设备时指定
+    handler: android-emulator#tap
+    parameters:
+      type: object
+      properties:
+        x: { type: number }
+        y: { type: number }
+        deviceId: { type: string, description: 设备 ID，多设备时指定 }
+      required: [x, y]
+  - id: swipe
+    description: 从 (x1,y1) 滑动到 (x2,y2)。duration 为毫秒，可选，默认 300
+    handler: android-emulator#swipe
+    parameters:
+      type: object
+      properties:
+        x1: { type: number }
+        y1: { type: number }
+        x2: { type: number }
+        y2: { type: number }
+        duration: { type: number, description: 毫秒，默认 300 }
+        deviceId: { type: string }
+      required: [x1, y1, x2, y2]
+  - id: inputText
+    description: 向当前焦点输入文字。空格会转为 %s，特殊字符需转义
+    handler: android-emulator#inputText
+    parameters:
+      type: object
+      properties:
+        text: { type: string }
+        deviceId: { type: string }
+      required: [text]
+  - id: keyEvent
+    description: 发送按键。keycode 支持别名或数字：BACK(4)、HOME(3)、MENU(82)、ENTER(66)、POWER(26)、VOLUME_UP(24)、VOLUME_DOWN(25) 等
+    handler: android-emulator#keyEvent
+    parameters:
+      type: object
+      properties:
+        keycode: { type: string, description: 按键码或别名。如 BACK、HOME、ENTER、4、66 等 }
+        deviceId: { type: string }
+      required: [keycode]
+  - id: screencap
+    description: 截取设备屏幕，返回图片文件供渠道展示。deviceId 可选
+    handler: android-emulator#screencap
+    parameters:
+      type: object
+      properties:
+        deviceId: { type: string }
+      required: []
+  - id: installApk
+    description: 安装 APK。apkPath 为本地路径（相对 workspace 或绝对路径）。deviceId 可选
+    handler: android-emulator#installApk
+    parameters:
+      type: object
+      properties:
+        apkPath: { type: string, description: APK 路径，相对 workspace 或绝对 }
+        deviceId: { type: string }
+      required: [apkPath]
+  - id: pushFile
+    description: 上传文件到设备。localPath 为本地路径（相对 workspace 或绝对），remotePath 为设备路径（如 /sdcard/Download/xxx）。deviceId 可选
+    handler: android-emulator#pushFile
+    parameters:
+      type: object
+      properties:
+        localPath: { type: string, description: 本地文件路径 }
+        remotePath: { type: string, description: 设备目标路径，如 /sdcard/Download/foo.txt }
+        deviceId: { type: string }
+      required: [localPath, remotePath]
+  - id: pullFile
+    description: 从设备下载文件。remotePath 为设备路径，localPath 可选（不填则保存到 workspace/downloads/）。deviceId 可选。返回 _fileReply 供渠道展示
+    handler: android-emulator#pullFile
+    parameters:
+      type: object
+      properties:
+        remotePath: { type: string, description: 设备上的文件路径，如 /sdcard/DCIM/screenshot.png }
+        localPath: { type: string, description: 本地保存路径，可选 }
+        deviceId: { type: string }
+      required: [remotePath]
+  - id: launchApp
+    description: 启动应用。package 必填（如 com.android.chrome）；activity 可选，不填则启动主 Activity。deviceId 可选
+    handler: android-emulator#launchApp
+    parameters:
+      type: object
+      properties:
+        package: { type: string, description: 应用包名，如 com.android.chrome }
+        activity: { type: string, description: 主 Activity 类名，可选。如不填则用主启动器启动 }
+        deviceId: { type: string }
+      required: [package]
+  - id: shell
+    description: 执行原始 adb shell 命令。command 必填，deviceId 可选。如 getprop、pm list packages 等
+    handler: android-emulator#shell
+    parameters:
+      type: object
+      properties:
+        command: { type: string }
+        deviceId: { type: string }
+      required: [command]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

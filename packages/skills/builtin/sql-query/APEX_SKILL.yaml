@@ -1,0 +1,44 @@
+name: sql-query
+version: 1.0.0
+description: 自然语言转 SQL + 执行查询。支持 SQLite，需提供 dbPath（工作区内 .db 文件路径）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: filesystem
+    scope: read
+  - id: filesystem
+    scope: write
+    description: 仅读取数据库文件，不写入
+
+tools:
+  - id: getSchema
+    description: 获取 SQLite 数据库的表结构（表名、列名、类型），用于 NL 转 SQL 时理解数据结构
+    handler: sql-query#getSchema
+    parameters:
+      type: object
+      properties:
+        dbPath: { type: string, description: SQLite 文件路径（相对于工作区，如 data/sales.db） }
+      required: [dbPath]
+  - id: execute
+    description: 执行 SQL 查询（SELECT 或只读语句），返回结果集
+    handler: sql-query#execute
+    parameters:
+      type: object
+      properties:
+        dbPath: { type: string, description: SQLite 文件路径 }
+        sql: { type: string, description: SQL 语句（仅 SELECT/只读，禁止 DDL/DML） }
+      required: [dbPath, sql]
+  - id: query
+    description: 自然语言查询。根据表结构用 LLM 生成 SQL 后执行，返回结果。需配置 LLM
+    handler: sql-query#query
+    parameters:
+      type: object
+      properties:
+        dbPath: { type: string, description: SQLite 文件路径 }
+        question: { type: string, description: 自然语言问题，如「销售额最高的 5 条记录」 }
+      required: [dbPath, question]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

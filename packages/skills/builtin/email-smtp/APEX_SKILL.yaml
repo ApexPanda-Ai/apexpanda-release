@@ -1,0 +1,28 @@
+name: email-smtp
+version: 1.0.0
+description: 通用邮件发送（支持附件）。配置 SMTP_HOST、SMTP_PORT、SMTP_USER、SMTP_PASS、SMTP_FROM
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 连接 SMTP 服务器发送邮件
+
+tools:
+  - id: send
+    description: 发送邮件。to 为收件人（数组或单个），subject 主题，text 或 html 二选一
+    handler: email-smtp#send
+    parameters:
+      type: object
+      properties:
+        to: { type: string, description: 收件人邮箱，多个用数组 }
+        subject: { type: string, description: 邮件主题 }
+        text: { type: string, description: 纯文本正文，与 html 二选一 }
+        html: { type: string, description: HTML 正文，与 text 二选一 }
+        from: { type: string, description: 发件人，可选 }
+      required: [to]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

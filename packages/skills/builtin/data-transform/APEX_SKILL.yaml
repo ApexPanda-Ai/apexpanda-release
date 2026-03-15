@@ -1,0 +1,55 @@
+name: data-transform
+version: 1.0.0
+description: CSV/JSON 数据清洗与转换
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: parse_json
+    description: 解析 JSON 字符串，返回解析后的对象
+    handler: data-transform#parseJson
+    parameters:
+      type: object
+      properties:
+        data: { type: string, description: JSON 字符串 }
+      required: [data]
+  - id: stringify_json
+    description: 将对象转为 JSON 字符串，可格式化
+    handler: data-transform#stringifyJson
+    parameters:
+      type: object
+      properties:
+        data: { type: object, description: 要序列化的对象 }
+        pretty: { type: boolean, description: 是否格式化输出，默认 false }
+      required: [data]
+  - id: parse_csv
+    description: 解析 CSV 字符串为数组对象
+    handler: data-transform#parseCsv
+    parameters:
+      type: object
+      properties:
+        data: { type: string, description: CSV 文本 }
+        delimiter: { type: string, description: 分隔符，默认逗号 }
+      required: [data]
+  - id: to_csv
+    description: 将对象数组转为 CSV 字符串
+    handler: data-transform#toCsv
+    parameters:
+      type: object
+      properties:
+        rows: { type: array, items: { type: object }, description: 对象数组 }
+        headers: { type: array, items: { type: string }, description: 表头键名，可选 }
+      required: [rows]
+  - id: filter_keys
+    description: 从对象或数组中筛选指定键
+    handler: data-transform#filterKeys
+    parameters:
+      type: object
+      properties:
+        data: { type: object, description: 对象或对象数组 }
+        keys: { type: array, items: { type: string }, description: 要保留的键名 }
+      required: [data, keys]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

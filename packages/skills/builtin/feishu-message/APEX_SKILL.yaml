@@ -1,0 +1,26 @@
+name: feishu-message
+version: 1.0.0
+description: 飞书消息发送（Bot/群聊/私聊）。需配置 FEISHU_APP_ID、FEISHU_APP_SECRET
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用飞书开放平台消息 API
+
+tools:
+  - id: send
+    description: 向飞书用户或群组发送文本消息。receiveId 为 open_id/chat_id/user_id，receiveIdType 指定类型
+    handler: feishu-message#send
+    parameters:
+      type: object
+      properties:
+        receiveId: { type: string, description: 飞书 open_id、chat_id 或 user_id }
+        content: { type: string, description: 消息内容 }
+        receiveIdType: { type: string, description: open_id | chat_id | user_id，默认 open_id }
+      required: [receiveId, content]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

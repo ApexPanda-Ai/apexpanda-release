@@ -1,0 +1,27 @@
+name: api-tester
+version: 1.0.0
+description: HTTP API 测试，类似 Postman，支持 GET/POST/PUT/DELETE/PATCH 及自定义请求头
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 发送 HTTP 请求
+
+tools:
+  - id: request
+    description: 发送 HTTP 请求，支持任意方法、请求头、请求体，返回状态码与响应内容
+    handler: api-tester#request
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 请求 URL，必填 }
+        method: { type: string, description: HTTP 方法 GET/POST/PUT/DELETE/PATCH，默认 GET }
+        headers: { type: object, description: 请求头键值对 }
+        body: { type: string, description: 请求体，JSON 或表单字符串 }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,41 @@
+name: code-runner
+version: 1.0.0
+description: 沙箱内安全执行 Python 与 JavaScript 代码（超时 15 秒）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 执行 Python 子进程
+
+tools:
+  - id: runPython
+    description: 执行 Python 代码，返回 stdout 与 stderr（超时 15 秒，需系统安装 Python）。path 和工作区 .apexpanda/voice、.agent-scripts 下文件可用相对路径
+    handler: code-runner#runPython
+    parameters:
+      type: object
+      properties:
+        code: { type: string, description: Python 代码字符串，直接执行 }
+      required: [code]
+  - id: runPythonFile
+    description: 执行工作区内的 Python 脚本文件。path 相对工作区（如 .agent-scripts/voice_asr/voice_asr.py）。可选 args 数组传参，如 args: [".apexpanda/voice/xxx.opus"] 传音频路径。脚本可用 sys.argv[1] 或 os.environ.get("APEX_VOICE_INPUT") 获取
+    handler: code-runner#runPythonFile
+    parameters:
+      type: object
+      properties:
+        path: { type: string, description: 相对工作区的 Python 脚本路径，如 .agent-scripts/voice_asr/voice_asr.py }
+        args: { type: array, items: { type: string }, description: 命令行参数，如音频路径 .apexpanda/voice/xxx.opus }
+      required: [path]
+  - id: runJs
+    description: 执行 JavaScript 表达式或语句（受限沙箱：Math/JSON/Array，需 return 返回值）
+    handler: code-runner#runJs
+    parameters:
+      type: object
+      properties:
+        code: { type: string, description: JavaScript 表达式或语句，需 return 返回值 }
+      required: [code]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

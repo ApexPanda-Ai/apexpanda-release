@@ -1,0 +1,32 @@
+name: docker-manage
+version: 1.0.0
+description: Docker 容器状态查询与管理，需本地安装 Docker
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 执行 docker 命令
+
+tools:
+  - id: listContainers
+    description: 列出所有容器（含已停止），返回名称、状态、镜像
+    handler: docker-manage#listContainers
+    parameters:
+      type: object
+      properties:
+        all: { type: boolean, description: 是否包含已停止的容器，默认 true }
+      required: []
+  - id: inspect
+    description: 查询指定容器的详细信息（名称或 ID）
+    handler: docker-manage#inspect
+    parameters:
+      type: object
+      properties:
+        nameOrId: { type: string, description: 容器名称或 ID }
+      required: [nameOrId]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

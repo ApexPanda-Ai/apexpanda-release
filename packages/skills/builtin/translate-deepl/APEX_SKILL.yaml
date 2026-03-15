@@ -1,0 +1,26 @@
+name: translate-deepl
+version: 1.0.0
+description: DeepL 翻译（欧语高质量）。需配置 DEEPL_AUTH_KEY
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用 DeepL 翻译 API
+
+tools:
+  - id: translate
+    description: 将文本翻译为指定语言。from 可选（不传则自动检测），to 为目标语言如 DE/FR/JA/ZH。欧语翻译质量高
+    handler: translate-deepl#translate
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 待翻译文本 }
+        from: { type: string, description: 源语言，可选，不传自动检测 }
+        to: { type: string, description: 目标语言如 DE/FR/JA/ZH，默认 ZH }
+      required: [text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,28 @@
+name: dingtalk-attendance
+version: 1.0.0
+description: 钉钉考勤打卡记录查询。需配置 DINGTALK_APP_KEY、DINGTALK_APP_SECRET（企业内部应用，需申请考勤接口权限）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用钉钉开放平台考勤 API
+
+tools:
+  - id: list
+    description: 查询考勤打卡记录。workDateFrom、workDateTo 为日期（YYYY-MM-DD），userIdList 为员工 ID 列表（逗号分隔或数组），offset 默认 0，limit 默认 50（最大 50）
+    handler: dingtalk-attendance#list
+    parameters:
+      type: object
+      properties:
+        workDateFrom: { type: string, description: 开始日期 YYYY-MM-DD }
+        workDateTo: { type: string, description: 结束日期 YYYY-MM-DD }
+        userIdList: { type: array, items: { type: string }, description: 员工 ID 列表 }
+        offset: { type: number, description: 偏移量，默认 0 }
+        limit: { type: number, description: 返回条数，默认 50 最大 50 }
+      required: [workDateFrom, workDateTo, userIdList]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

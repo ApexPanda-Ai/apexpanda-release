@@ -1,0 +1,32 @@
+name: meeting-minutes
+version: 1.0.0
+description: 会议纪要生成，从会议记录文本提取核心结论、待办事项、下次议题
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: extract
+    description: 从会议记录文本中提取结构化纪要。支持自由文本或 JSON 格式输入
+    handler: meeting-minutes#extract
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: 会议记录文本 }
+      required: [content]
+  - id: format
+    description: 将已有的结论/待办/下次议题格式化为会议纪要 Markdown
+    handler: meeting-minutes#format
+    parameters:
+      type: object
+      properties:
+        conclusions: { type: array, items: { type: string }, description: 结论列表 }
+        todos: { type: array, items: { type: object }, description: 待办列表，含 task }
+        nextTopics: { type: array, items: { type: string }, description: 下次议题 }
+        title: { type: string, description: 纪要标题，可选 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

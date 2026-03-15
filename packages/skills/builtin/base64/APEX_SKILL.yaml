@@ -1,0 +1,29 @@
+name: base64
+version: 1.0.0
+description: Base64 编解码，支持文本与二进制
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: encode
+    description: 将文本或 UTF-8 字符串编码为 Base64
+    handler: base64#encode
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 要编码的文本 }
+      required: [text]
+  - id: decode
+    description: 将 Base64 解码为 UTF-8 文本
+    handler: base64#decode
+    parameters:
+      type: object
+      properties:
+        base64: { type: string, description: Base64 编码的字符串 }
+      required: [base64]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

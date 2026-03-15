@@ -1,0 +1,48 @@
+name: cron-scheduler
+version: 1.0.0
+description: 定时任务管理、周期性执行。cron 表达式如 "0 9 * * *" 表示每天 9 点
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 执行到期任务命令
+  - id: filesystem
+    scope: read
+    description: 读取任务列表
+  - id: filesystem
+    scope: write
+    description: 保存/删除任务
+
+tools:
+  - id: schedule
+    description: 添加定时任务。cron 为 cron 表达式，command 为要执行的 shell 命令，id 可选
+    handler: cron-scheduler#schedule
+    parameters:
+      type: object
+      properties:
+        id: { type: string, description: 任务 ID，可选，不传自动生成 }
+        cron: { type: string, description: cron 表达式，如 0 9 * * * 每天 9 点 }
+        command: { type: string, description: 要执行的 shell 命令 }
+        description: { type: string, description: 任务说明，可选 }
+      required: [cron, command]
+  - id: list
+    description: 列出所有已 Scheduled 的定时任务
+    handler: cron-scheduler#list
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: cancel
+    description: 取消指定 id 的定时任务
+    handler: cron-scheduler#cancel
+    parameters:
+      type: object
+      properties:
+        id: { type: string, description: 任务 ID }
+      required: [id]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

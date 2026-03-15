@@ -1,0 +1,53 @@
+name: gitlab
+version: 1.0.0
+description: GitLab 仓库、Issue 操作。需 GITLAB_TOKEN，可配置 GITLAB_BASE_URL 支持自建实例
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用 GitLab API
+
+tools:
+  - id: listRepos
+    description: 列出当前用户的仓库（Projects）列表
+    handler: gitlab#listRepos
+    parameters:
+      type: object
+      properties:
+        limit: { type: number, description: 返回数量，默认 20 }
+      required: []
+  - id: getFile
+    description: 获取仓库文件内容。projectId 为项目 ID 或 path（如 group/repo），filePath 为文件路径
+    handler: gitlab#getFile
+    parameters:
+      type: object
+      properties:
+        projectId: { type: string, description: 项目 ID 或 path，如 group/repo }
+        filePath: { type: string, description: 文件路径 }
+      required: [projectId, filePath]
+  - id: createIssue
+    description: 创建 Issue。projectId 为项目 ID 或 path，title 和 description 为标题和正文
+    handler: gitlab#createIssue
+    parameters:
+      type: object
+      properties:
+        projectId: { type: string, description: 项目 ID 或 path }
+        title: { type: string, description: Issue 标题 }
+        description: { type: string, description: Issue 正文 }
+      required: [projectId, title]
+  - id: listIssues
+    description: 列出仓库 Issue 列表
+    handler: gitlab#listIssues
+    parameters:
+      type: object
+      properties:
+        projectId: { type: string, description: 项目 ID 或 path }
+        state: { type: string, description: opened/closed/all，默认 opened }
+        limit: { type: number, description: 返回数量，默认 20 }
+      required: [projectId]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
