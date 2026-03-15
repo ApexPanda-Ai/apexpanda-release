@@ -1,0 +1,27 @@
+name: webhook-trigger
+version: 1.0.0
+description: 发送 Webhook 通知，可与 n8n/Zapier 等联动
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 发送 HTTP 请求
+
+tools:
+  - id: send
+    description: 向指定 URL 发送 POST 请求，可携带 JSON 或表单数据
+    handler: webhook-trigger#send
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: Webhook URL }
+        method: { type: string, description: HTTP 方法，默认 POST }
+        body: { type: object, description: 请求体 JSON }
+        headers: { type: object, description: 请求头 }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

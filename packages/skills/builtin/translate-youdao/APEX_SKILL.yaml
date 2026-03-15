@@ -1,0 +1,27 @@
+name: translate-youdao
+version: 1.0.0
+description: 有道翻译（中英专业词汇强）。需配置 YOUDAO_APP_KEY、YOUDAO_APP_SECRET
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用有道智云翻译 API
+
+tools:
+  - id: translate
+    description: 将文本翻译为指定语言。from 默认 auto 自动检测，to 如 zh/en/ja。支持领域化翻译 domain（general/computers/medicine/finance/game）
+    handler: translate-youdao#translate
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 待翻译文本 }
+        from: { type: string, description: 源语言，默认 auto }
+        to: { type: string, description: 目标语言如 zh/en/ja，默认 zh }
+        domain: { type: string, description: general/computers/medicine/finance/game，默认 general }
+      required: [text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

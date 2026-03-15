@@ -1,0 +1,73 @@
+name: office-reader
+version: 1.0.0
+description: Word/Excel 文档解析、文本提取，支持 docx/xlsx，无需 API Key
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: filesystem
+    scope: read
+    description: 从工作区路径读取文档（extractDocxFromPath/extractXlsxFromPath）
+  - id: network
+    scope: outbound
+    description: 从 URL 获取文档（仅 extractFromUrl 工具需要）
+
+tools:
+  - id: extractDocxFromPath
+    description: 从工作区路径的 docx 文件提取纯文本
+    handler: office-reader#extractDocxFromPath
+    parameters:
+      type: object
+      properties:
+        path: { type: string, description: 相对工作区的 docx 文件路径 }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [path]
+  - id: extractDocxFromBase64
+    description: 从 Base64 编码的 docx 提取纯文本
+    handler: office-reader#extractDocxFromBase64
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: Base64 编码的 docx 内容 }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [content]
+  - id: extractDocxFromUrl
+    description: 从 URL 下载 docx 并提取纯文本
+    handler: office-reader#extractDocxFromUrl
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: docx 文件 URL }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [url]
+  - id: extractXlsxFromPath
+    description: 从工作区路径的 xlsx 文件提取表格文本（按行输出）
+    handler: office-reader#extractXlsxFromPath
+    parameters:
+      type: object
+      properties:
+        path: { type: string, description: 相对工作区的 xlsx 文件路径 }
+        maxRows: { type: number, description: 最大提取行数，可选 }
+      required: [path]
+  - id: extractXlsxFromBase64
+    description: 从 Base64 编码的 xlsx 提取表格文本（按行输出）
+    handler: office-reader#extractXlsxFromBase64
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: Base64 编码的 xlsx 内容 }
+        maxRows: { type: number, description: 最大提取行数，可选 }
+      required: [content]
+  - id: extractXlsxFromUrl
+    description: 从 URL 下载 xlsx 并提取表格文本
+    handler: office-reader#extractXlsxFromUrl
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: xlsx 文件 URL }
+        maxRows: { type: number, description: 最大提取行数，可选 }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

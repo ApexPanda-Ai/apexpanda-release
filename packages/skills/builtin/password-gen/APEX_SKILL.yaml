@@ -1,0 +1,21 @@
+name: password-gen
+version: 1.0.0
+description: 强密码生成器，支持自定义长度与字符集
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: generate
+    description: 生成强随机密码，可指定长度、是否包含数字/符号
+    handler: password-gen#generate
+    parameters:
+      type: object
+      properties:
+        length: { type: number, description: 密码长度，默认 16 }
+        includeNumbers: { type: boolean, description: 是否含数字，默认 true }
+        includeSymbols: { type: boolean, description: 是否含符号，默认 true }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,69 @@
+name: memory
+version: 1.0.0
+description: 长期记忆，记住用户偏好与历史事实，跨会话可复用
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: filesystem
+    scope: read
+    description: 读取记忆存储
+  - id: filesystem
+    scope: write
+    description: 写入记忆
+
+tools:
+  - id: write
+    description: 记住用户说的内容。用户说「记住XXX」「以后记得XXX」「别忘了XXX」时直接调用，传 content 为要记住的内容
+    handler: memory#write
+    parameters:
+      type: object
+      properties:
+        key: { type: string, description: 记忆键，如「喜好」「习惯」，可选，不传则自动生成 }
+        content: { type: string, description: 要记住的内容。用户说「记住XXX」「以后记得XXX」时传 content }
+        scope: { type: string, description: Phase 5 细粒度 scope，如 user:xxx、group:yyy，不传则用会话 scope }
+        tier: { type: string, enum: [log, fact], description: Phase 2 分层 log=日常/快速衰减 fact=持久事实（默认） }
+      required: [content]
+  - id: search
+    description: 检索记忆。用户说「查看记忆」「我的记忆」「我喜欢什么」「上次」「和以前一样」时调用，传 query 为关键词或「查看记忆」等
+    handler: memory#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 检索关键词。用户说「上次」「和以前一样」「我之前说过」时传相关关键词 }
+        limit: { type: number, description: 返回条数，默认 5 }
+        scope: { type: string, description: Phase 5 单 scope，如 user:xxx、group:yyy }
+        scopes: { type: array, items: { type: string }, description: 'Phase 5 多 scope 合并检索，如 ["user:xxx","group:yyy"]' }
+      required: [query]
+  - id: read
+    description: 按 key 或 id 精确读取某条记忆。memory_list 返回的条目若无 key，传 id 即可
+    handler: memory#read
+    parameters:
+      type: object
+      properties:
+        key: { type: string, description: 记忆键（如「喜好」），或 memory_list 返回的 id，二选一传一个即可 }
+        id: { type: string, description: 记忆 id（memory_list 返回的），与 key 二选一 }
+        scope: { type: string, description: Phase 5 细粒度 scope，不传则用会话 scope }
+      required: []
+  - id: list
+    description: 列出当前 scope 已记忆的条目（id、key、时间），用于配合 memory_read 获取完整内容
+    handler: memory#list
+    parameters:
+      type: object
+      properties:
+        scope: { type: string, description: Phase 5 细粒度 scope，不传则用会话 scope }
+      required: []
+  - id: delete
+    description: 删除指定记忆。用户说「忘记XXX」「删除刚才那条」时调用，传 id 或 key
+    handler: memory#delete
+    parameters:
+      type: object
+      properties:
+        id: { type: string, description: 记忆 ID（memory_list 返回的 id） }
+        key: { type: string, description: 记忆 key，与 id 二选一 }
+        scope: { type: string, description: Phase 5 细粒度 scope，不传则用会话 scope }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

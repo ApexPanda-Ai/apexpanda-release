@@ -1,0 +1,23 @@
+{
+  "name": "apexpanda",
+  "version": "1.3.1",
+  "description": "ApexPanda - 下一代自托管 AI 智能体平台",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "dev:gateway": "pnpm --filter @apexpanda/core run dev",
+    "dev:dashboard": "pnpm --filter @apexpanda/dashboard run dev",
+    "build": "pnpm -r run build",
+    "start": "pnpm --filter @apexpanda/core run start",
+    "build:shared": "pnpm --filter @apexpanda/shared run build",
+    "build:core": "pnpm --filter @apexpanda/core run build",
+    "build:dashboard": "pnpm --filter @apexpanda/dashboard run build",
+    "docker:build": "docker build -t apexpanda:latest .",
+    "docker:build-remote": "pwsh -File ./scripts/build-docker-remote.ps1"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@9.14.2"
+}

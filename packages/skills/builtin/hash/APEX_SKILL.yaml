@@ -1,0 +1,29 @@
+name: hash
+version: 1.0.0
+description: 字符串哈希（MD5、SHA256），用于校验与去重
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: md5
+    description: 计算字符串的 MD5 哈希值
+    handler: hash#md5
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 要哈希的字符串 }
+      required: [text]
+  - id: sha256
+    description: 计算字符串的 SHA256 哈希值
+    handler: hash#sha256
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 要哈希的字符串 }
+      required: [text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

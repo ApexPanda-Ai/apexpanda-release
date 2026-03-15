@@ -1,0 +1,29 @@
+name: web-search
+version: 1.0.0
+description: 网络搜索，基于 DuckDuckGo HTML 版，免费无需 API Key；国内建议用 web-search-baidu
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问 DuckDuckGo 搜索引擎
+
+tools:
+  - id: search
+    description: 搜索关键词，返回结果标题、链接及摘要。国内可能较慢，建议优先用 web-search-baidu_search
+    handler: web-search#search
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: 搜索关键词。仅当用户说「搜XXX」「查XXX」且未提「浏览器」「打开网站」时用此工具。用户说「浏览器搜索」时用 browser-automation 打开对应网站，勿用此工具
+        maxResults:
+          type: number
+          description: 最大结果数，默认 5，可选
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

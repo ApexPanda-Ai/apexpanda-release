@@ -1,0 +1,25 @@
+name: web-fetch-clean
+version: 1.0.0
+description: 网页抓取增强版，自动提取正文、清洗广告/导航，输出 Markdown 风格文本
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问外部 URL
+
+tools:
+  - id: fetchClean
+    description: 抓取网页并提取主内容，去除导航、侧边栏、广告等，输出清洗后的 Markdown 文本
+    handler: web-fetch-clean#fetchClean
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 要抓取的完整 URL }
+        maxChars: { type: number, description: 最大提取字符数，可选 }
+      required: [url]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

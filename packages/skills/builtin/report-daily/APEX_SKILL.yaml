@@ -1,0 +1,33 @@
+name: report-daily
+version: 1.0.0
+description: 日报/周报自动生成，将任务列表格式化为标准报告模板
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: generateDaily
+    description: 将任务/事项列表格式化为日报。items 为数组，每项支持 task/status/notes 或 content
+    handler: report-daily#generateDaily
+    parameters:
+      type: object
+      properties:
+        items: { type: array, items: { type: object }, description: 任务数组，每项含 task/status/notes 或 content }
+        title: { type: string, description: 日报标题，可选 }
+        date: { type: string, description: 日期，可选 }
+      required: [items]
+  - id: generateWeekly
+    description: 将任务/事项列表格式化为周报。items 为数组，支持按日期分组
+    handler: report-daily#generateWeekly
+    parameters:
+      type: object
+      properties:
+        items: { type: array, items: { type: object }, description: 任务数组 }
+        title: { type: string, description: 周报标题，可选 }
+        period: { type: string, description: 周期描述，可选 }
+      required: [items]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

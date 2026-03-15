@@ -1,0 +1,45 @@
+name: random
+version: 1.0.0
+description: 随机数、随机字符串、UUID 生成（无需外部服务）
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: randomInt
+    description: 生成 [min, max] 范围内均匀分布的随机整数
+    handler: random#randomInt
+    parameters:
+      type: object
+      properties:
+        min: { type: number, description: 最小值，默认 0 }
+        max: { type: number, description: 最大值，默认 100 }
+      required: []
+  - id: randomFloat
+    description: 生成 [0, 1) 范围内均匀分布的随机小数
+    handler: random#randomFloat
+    parameters:
+      type: object
+      properties: {}
+      required: []
+  - id: randomString
+    description: 生成指定长度的随机字符串（可选字符集：alphanumeric/hex/lower/numeric）
+    handler: random#randomString
+    parameters:
+      type: object
+      properties:
+        length: { type: number, description: 长度，默认 12 }
+        charset: { type: string, description: alphanumeric/hex/lower/numeric，默认 alphanumeric }
+      required: []
+  - id: uuid
+    description: 生成 UUID v4 唯一标识符
+    handler: random#uuid
+    parameters:
+      type: object
+      properties: {}
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
+
+showInTemplates: false

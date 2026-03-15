@@ -1,0 +1,25 @@
+name: healthcheck
+version: 1.0.0
+description: 批量 URL 可用性检测与告警
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问待检测 URL
+
+tools:
+  - id: check
+    description: 检测一个或多个 URL 的可用性，返回状态码与响应时间
+    handler: healthcheck#check
+    parameters:
+      type: object
+      properties:
+        url: { type: string, description: 单个 URL，与 urls 二选一 }
+        urls: { type: array, items: { type: string }, description: URL 列表，与 url 二选一 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

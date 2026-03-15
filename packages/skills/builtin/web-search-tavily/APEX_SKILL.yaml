@@ -1,0 +1,26 @@
+name: web-search-tavily
+version: 1.0.0
+description: Tavily AI 搜索（语义增强，适合 LLM 场景）。需 TAVILY_API_KEY
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 访问 Tavily Search API
+
+tools:
+  - id: search
+    description: 使用 Tavily 进行网页搜索，返回与查询最相关的结果
+    handler: web-search-tavily#search
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: 搜索关键词 }
+        maxResults: { type: number, description: 结果数 1-20，默认 5 }
+        searchDepth: { type: string, description: basic/advanced/fast/ultra-fast }
+      required: [query]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

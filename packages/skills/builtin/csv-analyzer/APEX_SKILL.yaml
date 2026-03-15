@@ -1,0 +1,30 @@
+name: csv-analyzer
+version: 1.0.0
+description: CSV 数据分析、统计摘要、可与 chart-gen 联动生成图表
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: describe
+    description: 解析 CSV 并对每列做统计（数值列：count/mean/min/max/sum，文本列：count/unique）
+    handler: csv-analyzer#describe
+    parameters:
+      type: object
+      properties:
+        data: { type: string, description: CSV 文本内容（含表头） }
+        delimiter: { type: string, description: 分隔符，默认逗号 }
+      required: [data]
+  - id: summary
+    description: 解析 CSV 返回前 N 行摘要及行数列数
+    handler: csv-analyzer#summary
+    parameters:
+      type: object
+      properties:
+        data: { type: string, description: CSV 文本内容 }
+        delimiter: { type: string, description: 分隔符，默认逗号 }
+        head: { type: number, description: 返回前 N 行，默认 5 }
+      required: [data]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,83 @@
+name: desktop-automation
+version: 1.0.0
+description: 操作系统级键盘鼠标模拟，可控制桌面任意应用（IDE、Excel、微信等）。基于 Nut.js
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: process
+    scope: spawn
+    description: 系统输入模拟
+
+tools:
+  - id: type
+    description: 在当前焦点输入文字
+    handler: desktop-automation#type
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 要输入的文字 }
+      required: [text]
+  - id: keyTap
+    description: 模拟按键。key 为键名（如 Enter、Tab、Control+c）；modifiers 为修饰键数组（如 ["Control","c"]）
+    handler: desktop-automation#keyTap
+    parameters:
+      type: object
+      properties:
+        key: { type: string, description: 键名如 Enter、Tab、Control+c }
+        modifiers: { type: array, items: { type: string }, description: '修饰键数组如 ["Control","c"]' }
+      required: [key]
+  - id: mouseMove
+    description: 将鼠标移动到指定坐标 (x, y)
+    handler: desktop-automation#mouseMove
+    parameters:
+      type: object
+      properties:
+        x: { type: number }
+        y: { type: number }
+      required: [x, y]
+  - id: mouseClick
+    description: 在指定坐标点击，或当前位点击。button 为 left/right，clicks 为点击次数
+    handler: desktop-automation#mouseClick
+    parameters:
+      type: object
+      properties:
+        x: { type: number }
+        y: { type: number }
+        button: { type: string, description: left 或 right，默认 left }
+        clicks: { type: number, description: 点击次数，默认 1 }
+      required: []
+  - id: mouseScroll
+    description: 滚动鼠标滚轮。direction 为 up/down，amount 为滚动量
+    handler: desktop-automation#mouseScroll
+    parameters:
+      type: object
+      properties:
+        direction: { type: string, description: up 或 down }
+        amount: { type: number, description: 滚动量，默认 3 }
+      required: []
+  - id: mouseDrag
+    description: 鼠标拖拽。from 为起点 {x,y}，to 为终点 {x,y}；或直接传 fromX/fromY/toX/toY
+    handler: desktop-automation#mouseDrag
+    parameters:
+      type: object
+      properties:
+        from: { type: object, description: '起点 {x,y}' }
+        to: { type: object, description: '终点 {x,y}' }
+        fromX: { type: number }
+        fromY: { type: number }
+        toX: { type: number }
+        toY: { type: number }
+      required: []
+  - id: screenshot
+    description: 截取屏幕指定区域或全屏。region 为 {x,y,width,height}，不传则截全屏
+    handler: desktop-automation#screenshot
+    parameters:
+      type: object
+      properties:
+        region: { type: object, description: '{x,y,width,height}，不传则截全屏' }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,36 @@
+name: reminder
+version: 1.0.0
+description: 本地定时提醒，设置与查看待办提醒
+author: ApexPanda
+license: MIT
+
+tools:
+  - id: add
+    description: 添加提醒，指定内容与提醒时间（ISO 时间或相对如 5min、1h）
+    handler: reminder#add
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: 提醒内容 }
+        at: { type: string, description: 提醒时间，ISO 或相对如 5min、1h，默认 5min }
+      required: [content]
+  - id: list
+    description: 列出即将到期的提醒
+    handler: reminder#list
+    parameters:
+      type: object
+      properties:
+        limit: { type: number, description: 返回条数，默认 10 }
+      required: []
+  - id: clear
+    description: 清除指定或全部提醒
+    handler: reminder#clear
+    parameters:
+      type: object
+      properties:
+        id: { type: string, description: 指定提醒 ID，不传则清除全部 }
+      required: []
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

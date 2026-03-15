@@ -1,0 +1,25 @@
+name: dingtalk-message
+version: 1.0.0
+description: 钉钉群机器人消息推送。需配置 DINGTALK_WEBHOOK_URL 或传入 webhookUrl 参数
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用钉钉群机器人 Webhook
+
+tools:
+  - id: send
+    description: 向钉钉群机器人推送文本消息。content 为消息内容，webhookUrl 可选（不传则用系统配置）
+    handler: dingtalk-message#send
+    parameters:
+      type: object
+      properties:
+        content: { type: string, description: 消息内容 }
+        webhookUrl: { type: string, description: 钉钉群机器人 Webhook URL，可选，不传用系统配置 }
+      required: [content]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

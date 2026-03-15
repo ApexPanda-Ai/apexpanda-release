@@ -1,0 +1,24 @@
+name: public-opinion-monitoring
+version: 1.0.0
+description: 舆情监测。对文本进行关键词与敏感词检测，输出监测报告。用户说「舆情监测」「关键词监测」「敏感词检测」「品牌监控」时调用
+author: ApexPanda
+license: MIT
+
+permissions: []
+
+tools:
+  - id: detect
+    description: 对文本进行关键词与敏感词检测，输出监测报告。text 必填；keywords 为关键词数组（如 ["品牌A","产品B"]）；sensitive 为敏感词数组；source 为来源说明（如 粘贴/文件/URL/检索）
+    handler: public-opinion-monitoring#detect
+    parameters:
+      type: object
+      properties:
+        text: { type: string, description: 待检测的文本内容。可从 file-tools 读取文件、web-fetch 抓取网页后传入 }
+        keywords: { type: array, items: { type: string }, description: '关键词列表，如 ["品牌A","产品B"]' }
+        sensitive: { type: array, items: { type: string }, description: '敏感词列表，如 ["违禁词"]' }
+        source: { type: string, description: 来源说明，如 粘贴/文件/URL/搜索引擎检索 }
+      required: [text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

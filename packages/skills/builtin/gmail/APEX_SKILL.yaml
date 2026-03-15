@@ -1,0 +1,42 @@
+name: gmail
+version: 1.0.0
+description: Gmail 读写、标签管理。需配置 Google OAuth（GOOGLE_CLIENT_ID、GOOGLE_CLIENT_SECRET、GOOGLE_REFRESH_TOKEN）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: listMessages
+    description: 列出邮件。query 为 Gmail 搜索语法，maxResults 默认 10
+    handler: gmail#listMessages
+    parameters:
+      type: object
+      properties:
+        query: { type: string, description: Gmail 搜索条件，如 "is:unread" 或 "from:xxx@example.com" }
+        maxResults: { type: number, description: 最大条数 }
+      required: []
+  - id: getMessage
+    description: 获取单封邮件详情
+    handler: gmail#getMessage
+    parameters:
+      type: object
+      properties:
+        messageId: { type: string, description: 邮件 ID }
+      required: [messageId]
+  - id: sendMessage
+    description: 发送邮件
+    handler: gmail#sendMessage
+    parameters:
+      type: object
+      properties:
+        to: { type: string, description: 收件人 }
+        subject: { type: string, description: 主题 }
+        body: { type: string, description: 正文 }
+      required: [to, subject, body]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

@@ -1,0 +1,31 @@
+name: translate
+version: 1.0.0
+description: 免费翻译（MyMemory API，无需 Key，支持 100+ 语种）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+
+tools:
+  - id: translate
+    description: 将文本翻译为指定目标语言。支持 auto 自动检测源语言。常用语种：zh/en/ja/ko/fr/de/es/ru/ar
+    handler: translate#translate
+    parameters:
+      type: object
+      properties:
+        text:
+          type: string
+          description: 待翻译文本
+        from:
+          type: string
+          description: 源语言代码，如 auto/zh/en，默认 auto 自动检测
+        to:
+          type: string
+          description: 目标语言代码，如 zh/en/ja，默认 zh
+      required: [text]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false

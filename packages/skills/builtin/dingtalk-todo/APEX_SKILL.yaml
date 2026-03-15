@@ -1,0 +1,26 @@
+name: dingtalk-todo
+version: 1.0.0
+description: 钉钉待办任务管理。需配置 DINGTALK_APP_KEY、DINGTALK_APP_SECRET（企业内部应用）
+author: ApexPanda
+license: MIT
+
+permissions:
+  - id: network
+    scope: outbound
+    description: 调用钉钉开放平台待办 API
+
+tools:
+  - id: create
+    description: 创建待办任务。userId 为用户 unionId 或 staffId（员工 ID），subject 为任务标题，dueTime 为截止时间（毫秒时间戳）可选
+    handler: dingtalk-todo#create
+    parameters:
+      type: object
+      properties:
+        userId: { type: string, description: 用户 unionId 或 staffId }
+        subject: { type: string, description: 任务标题 }
+        dueTime: { type: number, description: 截止时间毫秒时间戳，可选 }
+      required: [userId, subject]
+
+compatibility:
+  apexAgent: ">=0.1.0"
+  openClaw: false
